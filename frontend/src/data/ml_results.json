@@ -1,0 +1,2142 @@
+{
+  "logistic_regression": {
+    "performance": {
+      "auc": 0.679,
+      "sensitivity": 0.643,
+      "specificity": 0.55,
+      "ppv": 0.667,
+      "npv": 0.524,
+      "brier_score": 0.233,
+      "fpr": [
+        0.0,
+        0.0,
+        0.0,
+        0.05,
+        0.05,
+        0.075,
+        0.075,
+        0.125,
+        0.125,
+        0.15,
+        0.15,
+        0.175,
+        0.175,
+        0.225,
+        0.225,
+        0.25,
+        0.25,
+        0.275,
+        0.275,
+        0.35,
+        0.35,
+        0.45,
+        0.45,
+        0.525,
+        0.525,
+        0.55,
+        0.55,
+        0.575,
+        0.575,
+        0.6,
+        0.6,
+        0.625,
+        0.625,
+        0.65,
+        0.65,
+        0.725,
+        0.725,
+        0.775,
+        0.775,
+        0.975,
+        0.975,
+        1.0,
+        1.0
+      ],
+      "tpr": [
+        0.0,
+        0.018,
+        0.161,
+        0.161,
+        0.232,
+        0.232,
+        0.268,
+        0.268,
+        0.304,
+        0.304,
+        0.357,
+        0.357,
+        0.464,
+        0.464,
+        0.482,
+        0.482,
+        0.589,
+        0.589,
+        0.607,
+        0.607,
+        0.625,
+        0.625,
+        0.679,
+        0.679,
+        0.696,
+        0.696,
+        0.714,
+        0.714,
+        0.768,
+        0.768,
+        0.839,
+        0.839,
+        0.893,
+        0.893,
+        0.911,
+        0.911,
+        0.929,
+        0.929,
+        0.946,
+        0.946,
+        0.982,
+        0.982,
+        1.0
+      ],
+      "calibration_frac_pos": [
+        0.75,
+        0.1,
+        0.6,
+        0.538,
+        0.333,
+        0.75,
+        0.615,
+        1.0
+      ],
+      "calibration_mean_pred": [
+        0.097,
+        0.189,
+        0.324,
+        0.438,
+        0.577,
+        0.686,
+        0.821,
+        0.931
+      ]
+    },
+    "cv": {
+      "cv_auc_mean": 0.675,
+      "cv_auc_std": 0.1,
+      "cv_accuracy_mean": 0.628,
+      "cv_accuracy_std": 0.064
+    },
+    "bootstrap": {
+      "bootstrap_auc_mean": 0.686,
+      "bootstrap_auc_ci_lower": 0.586,
+      "bootstrap_auc_ci_upper": 0.791,
+      "n_iterations": 100
+    },
+    "shap_global": [
+      {
+        "feature": "prev_treatment_response_enc",
+        "label": "Previous Treatment Response",
+        "importance": 0.8707
+      },
+      {
+        "feature": "mars_score",
+        "label": "Medication Adherence (MARS)",
+        "importance": 0.4477
+      },
+      {
+        "feature": "episode_type_enc",
+        "label": "Episode Type",
+        "importance": 0.4292
+      },
+      {
+        "feature": "ad_class_enc",
+        "label": "Antidepressant Class",
+        "importance": 0.4001
+      },
+      {
+        "feature": "comorbidity_count",
+        "label": "Comorbidity Count",
+        "importance": 0.3978
+      },
+      {
+        "feature": "adr_occurred",
+        "label": "ADR Occurred",
+        "importance": 0.3959
+      },
+      {
+        "feature": "num_prev_episodes",
+        "label": "Number of Previous Episodes",
+        "importance": 0.3173
+      },
+      {
+        "feature": "madrs_baseline",
+        "label": "Baseline MADRS Score",
+        "importance": 0.291
+      },
+      {
+        "feature": "dep_duration_months",
+        "label": "Depression Duration (months)",
+        "importance": 0.2387
+      },
+      {
+        "feature": "naranjo_score",
+        "label": "Naranjo ADR Score",
+        "importance": 0.23
+      },
+      {
+        "feature": "age",
+        "label": "Patient Age",
+        "importance": 0.2172
+      },
+      {
+        "feature": "has_thyroid",
+        "label": "Thyroid Disorder",
+        "importance": 0.2013
+      },
+      {
+        "feature": "gad7_baseline",
+        "label": "Baseline Anxiety (GAD-7)",
+        "importance": 0.1781
+      },
+      {
+        "feature": "has_diabetes",
+        "label": "Diabetes",
+        "importance": 0.1101
+      },
+      {
+        "feature": "adherence_pct",
+        "label": "Pill Count Adherence %",
+        "importance": 0.0954
+      },
+      {
+        "feature": "family_history_enc",
+        "label": "Family History of Depression",
+        "importance": 0.0811
+      },
+      {
+        "feature": "bmi",
+        "label": "BMI",
+        "importance": 0.0799
+      },
+      {
+        "feature": "has_hypertension",
+        "label": "Hypertension",
+        "importance": 0.0769
+      },
+      {
+        "feature": "sex_enc",
+        "label": "Sex",
+        "importance": 0.0669
+      },
+      {
+        "feature": "has_cardiovascular",
+        "label": "Cardiovascular Disease",
+        "importance": 0.0493
+      },
+      {
+        "feature": "ad_duration_weeks",
+        "label": "AD Treatment Duration (weeks)",
+        "importance": 0.0158
+      },
+      {
+        "feature": "prev_hospitalization_enc",
+        "label": "Previous Hospitalization",
+        "importance": 0.0049
+      }
+    ],
+    "dca": [
+      {
+        "threshold": 0.01,
+        "model": 0.5791,
+        "treat_all": 0.5791,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.03,
+        "model": 0.5704,
+        "treat_all": 0.5704,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.05,
+        "model": 0.5614,
+        "treat_all": 0.5614,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.07,
+        "model": 0.552,
+        "treat_all": 0.552,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.09,
+        "model": 0.5317,
+        "treat_all": 0.5421,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.11,
+        "model": 0.5123,
+        "treat_all": 0.5318,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.13,
+        "model": 0.4914,
+        "treat_all": 0.5211,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.15,
+        "model": 0.4841,
+        "treat_all": 0.5098,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.17,
+        "model": 0.4753,
+        "treat_all": 0.498,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.19,
+        "model": 0.469,
+        "treat_all": 0.4856,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.21,
+        "model": 0.4635,
+        "treat_all": 0.4726,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.23,
+        "model": 0.4452,
+        "treat_all": 0.4589,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.25,
+        "model": 0.4375,
+        "treat_all": 0.4444,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.27,
+        "model": 0.4299,
+        "treat_all": 0.4292,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.29,
+        "model": 0.4183,
+        "treat_all": 0.4131,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.31,
+        "model": 0.3992,
+        "treat_all": 0.3961,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.33,
+        "model": 0.3822,
+        "treat_all": 0.3781,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.35,
+        "model": 0.355,
+        "treat_all": 0.359,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.37,
+        "model": 0.3011,
+        "treat_all": 0.3386,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.39,
+        "model": 0.2947,
+        "treat_all": 0.3169,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.41,
+        "model": 0.2606,
+        "treat_all": 0.2938,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.43,
+        "model": 0.2412,
+        "treat_all": 0.269,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.45,
+        "model": 0.2169,
+        "treat_all": 0.2424,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.47,
+        "model": 0.2296,
+        "treat_all": 0.2138,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.49,
+        "model": 0.2053,
+        "treat_all": 0.183,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.51,
+        "model": 0.1803,
+        "treat_all": 0.1497,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.53,
+        "model": 0.1649,
+        "treat_all": 0.1135,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.55,
+        "model": 0.1609,
+        "treat_all": 0.0741,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.57,
+        "model": 0.1575,
+        "treat_all": 0.031,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.59,
+        "model": 0.1593,
+        "treat_all": -0.0163,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.61,
+        "model": 0.1587,
+        "treat_all": -0.0684,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.63,
+        "model": 0.1456,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.65,
+        "model": 0.0982,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.67,
+        "model": 0.0909,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.69,
+        "model": 0.0853,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.71,
+        "model": 0.0449,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.73,
+        "model": 0.0185,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.75,
+        "model": 0.0208,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.77,
+        "model": 0.0027,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.79,
+        "model": -0.0397,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.81,
+        "model": 0.0126,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.83,
+        "model": 0.0337,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.85,
+        "model": -0.0139,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.87,
+        "model": 0.0938,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.89,
+        "model": 0.0938,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.91,
+        "model": 0.0729,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.93,
+        "model": 0.0417,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.95,
+        "model": 0.0208,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.97,
+        "model": 0.0104,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.99,
+        "model": 0.0,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      }
+    ],
+    "trained": true
+  },
+  "decision_tree": {
+    "performance": {
+      "auc": 0.694,
+      "sensitivity": 0.696,
+      "specificity": 0.65,
+      "ppv": 0.736,
+      "npv": 0.605,
+      "brier_score": 0.247,
+      "fpr": [
+        0.0,
+        0.05,
+        0.125,
+        0.15,
+        0.175,
+        0.2,
+        0.2,
+        0.35,
+        0.4,
+        0.4,
+        0.5,
+        0.975,
+        1.0
+      ],
+      "tpr": [
+        0.0,
+        0.196,
+        0.268,
+        0.375,
+        0.464,
+        0.482,
+        0.518,
+        0.696,
+        0.714,
+        0.732,
+        0.75,
+        1.0,
+        1.0
+      ],
+      "calibration_frac_pos": [
+        0.0,
+        0.41,
+        0.333,
+        0.667,
+        0.5,
+        0.833,
+        0.778
+      ],
+      "calibration_mean_pred": [
+        0.0,
+        0.167,
+        0.333,
+        0.535,
+        0.75,
+        0.786,
+        0.96
+      ]
+    },
+    "cv": {
+      "cv_auc_mean": 0.63,
+      "cv_auc_std": 0.065,
+      "cv_accuracy_mean": 0.613,
+      "cv_accuracy_std": 0.075
+    },
+    "bootstrap": {
+      "bootstrap_auc_mean": 0.698,
+      "bootstrap_auc_ci_lower": 0.593,
+      "bootstrap_auc_ci_upper": 0.798,
+      "n_iterations": 100
+    },
+    "shap_global": [
+      {
+        "feature": "prev_treatment_response_enc",
+        "label": "Previous Treatment Response",
+        "importance": 0.1943
+      },
+      {
+        "feature": "age",
+        "label": "Patient Age",
+        "importance": 0.1303
+      },
+      {
+        "feature": "bmi",
+        "label": "BMI",
+        "importance": 0.1082
+      },
+      {
+        "feature": "dep_duration_months",
+        "label": "Depression Duration (months)",
+        "importance": 0.1028
+      },
+      {
+        "feature": "mars_score",
+        "label": "Medication Adherence (MARS)",
+        "importance": 0.1018
+      },
+      {
+        "feature": "gad7_baseline",
+        "label": "Baseline Anxiety (GAD-7)",
+        "importance": 0.0863
+      },
+      {
+        "feature": "naranjo_score",
+        "label": "Naranjo ADR Score",
+        "importance": 0.0667
+      },
+      {
+        "feature": "has_diabetes",
+        "label": "Diabetes",
+        "importance": 0.0666
+      },
+      {
+        "feature": "ad_duration_weeks",
+        "label": "AD Treatment Duration (weeks)",
+        "importance": 0.0592
+      },
+      {
+        "feature": "madrs_baseline",
+        "label": "Baseline MADRS Score",
+        "importance": 0.0389
+      },
+      {
+        "feature": "adherence_pct",
+        "label": "Pill Count Adherence %",
+        "importance": 0.0361
+      },
+      {
+        "feature": "comorbidity_count",
+        "label": "Comorbidity Count",
+        "importance": 0.0088
+      },
+      {
+        "feature": "num_prev_episodes",
+        "label": "Number of Previous Episodes",
+        "importance": 0.0
+      },
+      {
+        "feature": "sex_enc",
+        "label": "Sex",
+        "importance": 0.0
+      },
+      {
+        "feature": "episode_type_enc",
+        "label": "Episode Type",
+        "importance": 0.0
+      },
+      {
+        "feature": "family_history_enc",
+        "label": "Family History of Depression",
+        "importance": 0.0
+      },
+      {
+        "feature": "prev_hospitalization_enc",
+        "label": "Previous Hospitalization",
+        "importance": 0.0
+      },
+      {
+        "feature": "ad_class_enc",
+        "label": "Antidepressant Class",
+        "importance": 0.0
+      },
+      {
+        "feature": "adr_occurred",
+        "label": "ADR Occurred",
+        "importance": 0.0
+      },
+      {
+        "feature": "has_hypertension",
+        "label": "Hypertension",
+        "importance": 0.0
+      },
+      {
+        "feature": "has_thyroid",
+        "label": "Thyroid Disorder",
+        "importance": 0.0
+      },
+      {
+        "feature": "has_cardiovascular",
+        "label": "Cardiovascular Disease",
+        "importance": 0.0
+      }
+    ],
+    "dca": [
+      {
+        "threshold": 0.01,
+        "model": 0.5792,
+        "treat_all": 0.5791,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.03,
+        "model": 0.5708,
+        "treat_all": 0.5704,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.05,
+        "model": 0.562,
+        "treat_all": 0.5614,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.07,
+        "model": 0.5528,
+        "treat_all": 0.552,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.09,
+        "model": 0.5432,
+        "treat_all": 0.5421,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.11,
+        "model": 0.5331,
+        "treat_all": 0.5318,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.13,
+        "model": 0.5226,
+        "treat_all": 0.5211,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.15,
+        "model": 0.5116,
+        "treat_all": 0.5098,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.17,
+        "model": 0.3948,
+        "treat_all": 0.498,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.19,
+        "model": 0.3886,
+        "treat_all": 0.4856,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.21,
+        "model": 0.3828,
+        "treat_all": 0.4726,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.23,
+        "model": 0.3773,
+        "treat_all": 0.4589,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.25,
+        "model": 0.3715,
+        "treat_all": 0.4444,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.27,
+        "model": 0.355,
+        "treat_all": 0.4292,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.29,
+        "model": 0.3486,
+        "treat_all": 0.4131,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.31,
+        "model": 0.3418,
+        "treat_all": 0.3961,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.33,
+        "model": 0.3346,
+        "treat_all": 0.3781,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.35,
+        "model": 0.3277,
+        "treat_all": 0.359,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.37,
+        "model": 0.3206,
+        "treat_all": 0.3386,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.39,
+        "model": 0.313,
+        "treat_all": 0.3169,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.41,
+        "model": 0.3049,
+        "treat_all": 0.2938,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.43,
+        "model": 0.2962,
+        "treat_all": 0.269,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.45,
+        "model": 0.2869,
+        "treat_all": 0.2424,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.47,
+        "model": 0.2769,
+        "treat_all": 0.2138,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.49,
+        "model": 0.2661,
+        "treat_all": 0.183,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.51,
+        "model": 0.2545,
+        "treat_all": 0.1497,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.53,
+        "model": 0.2081,
+        "treat_all": 0.1135,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.55,
+        "model": 0.2002,
+        "treat_all": 0.0741,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.57,
+        "model": 0.1916,
+        "treat_all": 0.031,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.59,
+        "model": 0.1822,
+        "treat_all": -0.0163,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.61,
+        "model": 0.1509,
+        "treat_all": -0.0684,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.63,
+        "model": 0.1394,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.65,
+        "model": 0.1265,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.67,
+        "model": 0.1121,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.69,
+        "model": 0.0958,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.71,
+        "model": 0.0772,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.73,
+        "model": 0.0559,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.75,
+        "model": 0.0313,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.77,
+        "model": 0.0267,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.79,
+        "model": -0.0164,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.81,
+        "model": -0.0477,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.83,
+        "model": -0.05,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.85,
+        "model": -0.05,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.87,
+        "model": -0.05,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.89,
+        "model": -0.05,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.91,
+        "model": -0.05,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.93,
+        "model": -0.05,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.95,
+        "model": -0.05,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.97,
+        "model": -0.05,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.99,
+        "model": -0.05,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      }
+    ],
+    "trained": true
+  },
+  "random_forest": {
+    "performance": {
+      "auc": 0.612,
+      "sensitivity": 0.714,
+      "specificity": 0.4,
+      "ppv": 0.625,
+      "npv": 0.5,
+      "brier_score": 0.238,
+      "fpr": [
+        0.0,
+        0.0,
+        0.025,
+        0.025,
+        0.05,
+        0.05,
+        0.075,
+        0.075,
+        0.1,
+        0.1,
+        0.125,
+        0.125,
+        0.15,
+        0.15,
+        0.175,
+        0.175,
+        0.2,
+        0.2,
+        0.225,
+        0.225,
+        0.25,
+        0.25,
+        0.275,
+        0.275,
+        0.4,
+        0.4,
+        0.425,
+        0.425,
+        0.5,
+        0.5,
+        0.6,
+        0.6,
+        0.625,
+        0.625,
+        0.65,
+        0.65,
+        0.675,
+        0.675,
+        0.725,
+        0.725,
+        0.775,
+        0.775,
+        0.825,
+        0.825,
+        0.85,
+        0.85,
+        0.875,
+        0.875,
+        0.95,
+        0.95,
+        1.0,
+        1.0
+      ],
+      "tpr": [
+        0.0,
+        0.018,
+        0.018,
+        0.054,
+        0.054,
+        0.107,
+        0.107,
+        0.161,
+        0.161,
+        0.214,
+        0.214,
+        0.268,
+        0.268,
+        0.304,
+        0.304,
+        0.393,
+        0.393,
+        0.446,
+        0.446,
+        0.482,
+        0.482,
+        0.5,
+        0.5,
+        0.536,
+        0.536,
+        0.554,
+        0.554,
+        0.589,
+        0.589,
+        0.643,
+        0.643,
+        0.714,
+        0.714,
+        0.732,
+        0.732,
+        0.786,
+        0.786,
+        0.821,
+        0.821,
+        0.839,
+        0.839,
+        0.875,
+        0.875,
+        0.893,
+        0.893,
+        0.911,
+        0.911,
+        0.964,
+        0.964,
+        0.982,
+        0.982,
+        1.0
+      ],
+      "calibration_frac_pos": [
+        1.0,
+        0.375,
+        0.522,
+        0.5,
+        0.739,
+        0.727
+      ],
+      "calibration_mean_pred": [
+        0.188,
+        0.322,
+        0.444,
+        0.557,
+        0.68,
+        0.8
+      ]
+    },
+    "cv": {
+      "cv_auc_mean": 0.652,
+      "cv_auc_std": 0.081,
+      "cv_accuracy_mean": 0.622,
+      "cv_accuracy_std": 0.074
+    },
+    "bootstrap": {
+      "bootstrap_auc_mean": 0.612,
+      "bootstrap_auc_ci_lower": 0.493,
+      "bootstrap_auc_ci_upper": 0.715,
+      "n_iterations": 100
+    },
+    "shap_global": [
+      {
+        "feature": "prev_treatment_response_enc",
+        "label": "Previous Treatment Response",
+        "importance": 0.0947
+      },
+      {
+        "feature": "age",
+        "label": "Patient Age",
+        "importance": 0.0921
+      },
+      {
+        "feature": "bmi",
+        "label": "BMI",
+        "importance": 0.0901
+      },
+      {
+        "feature": "madrs_baseline",
+        "label": "Baseline MADRS Score",
+        "importance": 0.0888
+      },
+      {
+        "feature": "dep_duration_months",
+        "label": "Depression Duration (months)",
+        "importance": 0.0858
+      },
+      {
+        "feature": "adherence_pct",
+        "label": "Pill Count Adherence %",
+        "importance": 0.0769
+      },
+      {
+        "feature": "gad7_baseline",
+        "label": "Baseline Anxiety (GAD-7)",
+        "importance": 0.0673
+      },
+      {
+        "feature": "ad_duration_weeks",
+        "label": "AD Treatment Duration (weeks)",
+        "importance": 0.066
+      },
+      {
+        "feature": "mars_score",
+        "label": "Medication Adherence (MARS)",
+        "importance": 0.0604
+      },
+      {
+        "feature": "comorbidity_count",
+        "label": "Comorbidity Count",
+        "importance": 0.0538
+      },
+      {
+        "feature": "num_prev_episodes",
+        "label": "Number of Previous Episodes",
+        "importance": 0.0379
+      },
+      {
+        "feature": "naranjo_score",
+        "label": "Naranjo ADR Score",
+        "importance": 0.0363
+      },
+      {
+        "feature": "ad_class_enc",
+        "label": "Antidepressant Class",
+        "importance": 0.032
+      },
+      {
+        "feature": "has_diabetes",
+        "label": "Diabetes",
+        "importance": 0.0204
+      },
+      {
+        "feature": "has_cardiovascular",
+        "label": "Cardiovascular Disease",
+        "importance": 0.0158
+      },
+      {
+        "feature": "family_history_enc",
+        "label": "Family History of Depression",
+        "importance": 0.0142
+      },
+      {
+        "feature": "prev_hospitalization_enc",
+        "label": "Previous Hospitalization",
+        "importance": 0.0136
+      },
+      {
+        "feature": "has_hypertension",
+        "label": "Hypertension",
+        "importance": 0.013
+      },
+      {
+        "feature": "sex_enc",
+        "label": "Sex",
+        "importance": 0.0114
+      },
+      {
+        "feature": "has_thyroid",
+        "label": "Thyroid Disorder",
+        "importance": 0.0107
+      },
+      {
+        "feature": "episode_type_enc",
+        "label": "Episode Type",
+        "importance": 0.0101
+      },
+      {
+        "feature": "adr_occurred",
+        "label": "ADR Occurred",
+        "importance": 0.0086
+      }
+    ],
+    "dca": [
+      {
+        "threshold": 0.01,
+        "model": 0.5791,
+        "treat_all": 0.5791,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.03,
+        "model": 0.5704,
+        "treat_all": 0.5704,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.05,
+        "model": 0.5614,
+        "treat_all": 0.5614,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.07,
+        "model": 0.552,
+        "treat_all": 0.552,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.09,
+        "model": 0.5421,
+        "treat_all": 0.5421,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.11,
+        "model": 0.5318,
+        "treat_all": 0.5318,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.13,
+        "model": 0.5211,
+        "treat_all": 0.5211,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.15,
+        "model": 0.5098,
+        "treat_all": 0.5098,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.17,
+        "model": 0.498,
+        "treat_all": 0.498,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.19,
+        "model": 0.4752,
+        "treat_all": 0.4856,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.21,
+        "model": 0.4622,
+        "treat_all": 0.4726,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.23,
+        "model": 0.4485,
+        "treat_all": 0.4589,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.25,
+        "model": 0.434,
+        "treat_all": 0.4444,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.27,
+        "model": 0.4227,
+        "treat_all": 0.4292,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.29,
+        "model": 0.4112,
+        "treat_all": 0.4131,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.31,
+        "model": 0.3847,
+        "treat_all": 0.3961,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.33,
+        "model": 0.3727,
+        "treat_all": 0.3781,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.35,
+        "model": 0.3558,
+        "treat_all": 0.359,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.37,
+        "model": 0.3275,
+        "treat_all": 0.3386,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.39,
+        "model": 0.3048,
+        "treat_all": 0.3169,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.41,
+        "model": 0.2715,
+        "treat_all": 0.2938,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.43,
+        "model": 0.246,
+        "treat_all": 0.269,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.45,
+        "model": 0.2424,
+        "treat_all": 0.2424,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.47,
+        "model": 0.2182,
+        "treat_all": 0.2138,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.49,
+        "model": 0.1769,
+        "treat_all": 0.183,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.51,
+        "model": 0.1252,
+        "treat_all": 0.1497,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.53,
+        "model": 0.1297,
+        "treat_all": 0.1135,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.55,
+        "model": 0.1169,
+        "treat_all": 0.0741,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.57,
+        "model": 0.1054,
+        "treat_all": 0.031,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.59,
+        "model": 0.1476,
+        "treat_all": -0.0163,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.61,
+        "model": 0.1346,
+        "treat_all": -0.0684,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.63,
+        "model": 0.1008,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.65,
+        "model": 0.0848,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.67,
+        "model": 0.029,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.69,
+        "model": 0.0195,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.71,
+        "model": 0.0022,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.73,
+        "model": -0.0189,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.75,
+        "model": -0.0104,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.77,
+        "model": -0.0213,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.79,
+        "model": -0.0471,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.81,
+        "model": -0.0236,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.83,
+        "model": 0.0104,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.85,
+        "model": 0.0104,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.87,
+        "model": 0.0104,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.89,
+        "model": 0.0,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.91,
+        "model": 0.0,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.93,
+        "model": 0.0,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.95,
+        "model": 0.0,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.97,
+        "model": 0.0,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.99,
+        "model": 0.0,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      }
+    ],
+    "trained": true
+  },
+  "xgboost": {
+    "performance": {
+      "auc": 0.605,
+      "sensitivity": 0.643,
+      "specificity": 0.5,
+      "ppv": 0.643,
+      "npv": 0.5,
+      "brier_score": 0.303,
+      "fpr": [
+        0.0,
+        0.0,
+        0.0,
+        0.05,
+        0.05,
+        0.075,
+        0.075,
+        0.125,
+        0.125,
+        0.175,
+        0.175,
+        0.275,
+        0.275,
+        0.3,
+        0.3,
+        0.325,
+        0.325,
+        0.375,
+        0.375,
+        0.425,
+        0.425,
+        0.475,
+        0.475,
+        0.525,
+        0.525,
+        0.55,
+        0.55,
+        0.6,
+        0.6,
+        0.65,
+        0.65,
+        0.725,
+        0.725,
+        0.75,
+        0.75,
+        0.8,
+        0.8,
+        0.85,
+        0.85,
+        0.975,
+        0.975,
+        1.0,
+        1.0
+      ],
+      "tpr": [
+        0.0,
+        0.018,
+        0.179,
+        0.179,
+        0.25,
+        0.25,
+        0.321,
+        0.321,
+        0.375,
+        0.375,
+        0.411,
+        0.411,
+        0.429,
+        0.429,
+        0.446,
+        0.446,
+        0.464,
+        0.464,
+        0.482,
+        0.482,
+        0.5,
+        0.5,
+        0.643,
+        0.643,
+        0.679,
+        0.679,
+        0.696,
+        0.696,
+        0.732,
+        0.732,
+        0.768,
+        0.768,
+        0.786,
+        0.786,
+        0.839,
+        0.839,
+        0.857,
+        0.857,
+        0.911,
+        0.911,
+        0.929,
+        0.929,
+        1.0
+      ],
+      "calibration_frac_pos": [
+        0.5,
+        0.571,
+        0.444,
+        0.5,
+        0.8,
+        0.333,
+        0.375,
+        0.719
+      ],
+      "calibration_mean_pred": [
+        0.066,
+        0.188,
+        0.312,
+        0.425,
+        0.583,
+        0.694,
+        0.831,
+        0.952
+      ]
+    },
+    "cv": {
+      "cv_auc_mean": 0.642,
+      "cv_auc_std": 0.077,
+      "cv_accuracy_mean": 0.616,
+      "cv_accuracy_std": 0.077
+    },
+    "bootstrap": {
+      "bootstrap_auc_mean": 0.605,
+      "bootstrap_auc_ci_lower": 0.49,
+      "bootstrap_auc_ci_upper": 0.699,
+      "n_iterations": 100
+    },
+    "shap_global": [
+      {
+        "feature": "dep_duration_months",
+        "label": "Depression Duration (months)",
+        "importance": 0.1382
+      },
+      {
+        "feature": "prev_treatment_response_enc",
+        "label": "Previous Treatment Response",
+        "importance": 0.1218
+      },
+      {
+        "feature": "age",
+        "label": "Patient Age",
+        "importance": 0.0945
+      },
+      {
+        "feature": "madrs_baseline",
+        "label": "Baseline MADRS Score",
+        "importance": 0.0936
+      },
+      {
+        "feature": "mars_score",
+        "label": "Medication Adherence (MARS)",
+        "importance": 0.088
+      },
+      {
+        "feature": "bmi",
+        "label": "BMI",
+        "importance": 0.0871
+      },
+      {
+        "feature": "gad7_baseline",
+        "label": "Baseline Anxiety (GAD-7)",
+        "importance": 0.0785
+      },
+      {
+        "feature": "ad_duration_weeks",
+        "label": "AD Treatment Duration (weeks)",
+        "importance": 0.0741
+      },
+      {
+        "feature": "adherence_pct",
+        "label": "Pill Count Adherence %",
+        "importance": 0.0488
+      },
+      {
+        "feature": "comorbidity_count",
+        "label": "Comorbidity Count",
+        "importance": 0.0487
+      },
+      {
+        "feature": "ad_class_enc",
+        "label": "Antidepressant Class",
+        "importance": 0.0363
+      },
+      {
+        "feature": "naranjo_score",
+        "label": "Naranjo ADR Score",
+        "importance": 0.0177
+      },
+      {
+        "feature": "num_prev_episodes",
+        "label": "Number of Previous Episodes",
+        "importance": 0.0164
+      },
+      {
+        "feature": "has_diabetes",
+        "label": "Diabetes",
+        "importance": 0.0131
+      },
+      {
+        "feature": "episode_type_enc",
+        "label": "Episode Type",
+        "importance": 0.0104
+      },
+      {
+        "feature": "has_cardiovascular",
+        "label": "Cardiovascular Disease",
+        "importance": 0.0086
+      },
+      {
+        "feature": "family_history_enc",
+        "label": "Family History of Depression",
+        "importance": 0.0079
+      },
+      {
+        "feature": "prev_hospitalization_enc",
+        "label": "Previous Hospitalization",
+        "importance": 0.0058
+      },
+      {
+        "feature": "adr_occurred",
+        "label": "ADR Occurred",
+        "importance": 0.0048
+      },
+      {
+        "feature": "has_hypertension",
+        "label": "Hypertension",
+        "importance": 0.003
+      },
+      {
+        "feature": "has_thyroid",
+        "label": "Thyroid Disorder",
+        "importance": 0.0025
+      },
+      {
+        "feature": "sex_enc",
+        "label": "Sex",
+        "importance": 0.0002
+      }
+    ],
+    "dca": [
+      {
+        "threshold": 0.01,
+        "model": 0.5583,
+        "treat_all": 0.5791,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.03,
+        "model": 0.5392,
+        "treat_all": 0.5704,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.05,
+        "model": 0.5302,
+        "treat_all": 0.5614,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.07,
+        "model": 0.5007,
+        "treat_all": 0.552,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.09,
+        "model": 0.4911,
+        "treat_all": 0.5421,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.11,
+        "model": 0.4836,
+        "treat_all": 0.5318,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.13,
+        "model": 0.4768,
+        "treat_all": 0.5211,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.15,
+        "model": 0.4669,
+        "treat_all": 0.5098,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.17,
+        "model": 0.4483,
+        "treat_all": 0.498,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.19,
+        "model": 0.4169,
+        "treat_all": 0.4856,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.21,
+        "model": 0.4086,
+        "treat_all": 0.4726,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.23,
+        "model": 0.4004,
+        "treat_all": 0.4589,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.25,
+        "model": 0.3785,
+        "treat_all": 0.4444,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.27,
+        "model": 0.374,
+        "treat_all": 0.4292,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.29,
+        "model": 0.3411,
+        "treat_all": 0.4131,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.31,
+        "model": 0.3284,
+        "treat_all": 0.3961,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.33,
+        "model": 0.3095,
+        "treat_all": 0.3781,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.35,
+        "model": 0.2957,
+        "treat_all": 0.359,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.37,
+        "model": 0.2827,
+        "treat_all": 0.3386,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.39,
+        "model": 0.2606,
+        "treat_all": 0.3169,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.41,
+        "model": 0.2461,
+        "treat_all": 0.2938,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.43,
+        "model": 0.2255,
+        "treat_all": 0.269,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.45,
+        "model": 0.2169,
+        "treat_all": 0.2424,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.47,
+        "model": 0.1914,
+        "treat_all": 0.2138,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.49,
+        "model": 0.1748,
+        "treat_all": 0.183,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.51,
+        "model": 0.1582,
+        "treat_all": 0.1497,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.53,
+        "model": 0.1518,
+        "treat_all": 0.1135,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.55,
+        "model": 0.1227,
+        "treat_all": 0.0741,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.57,
+        "model": 0.0918,
+        "treat_all": 0.031,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.59,
+        "model": 0.0485,
+        "treat_all": -0.0163,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.61,
+        "model": -0.0075,
+        "treat_all": -0.0684,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.63,
+        "model": -0.0276,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.65,
+        "model": -0.0372,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.67,
+        "model": -0.05,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.69,
+        "model": -0.05,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.71,
+        "model": -0.05,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.73,
+        "model": -0.05,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.75,
+        "model": -0.05,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.77,
+        "model": -0.05,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.79,
+        "model": -0.05,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.81,
+        "model": -0.05,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.83,
+        "model": -0.05,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.85,
+        "model": -0.05,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.87,
+        "model": -0.05,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.89,
+        "model": -0.05,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.91,
+        "model": -0.05,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.93,
+        "model": -0.05,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.95,
+        "model": -0.05,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.97,
+        "model": -0.05,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      },
+      {
+        "threshold": 0.99,
+        "model": 0.0521,
+        "treat_all": -0.1,
+        "treat_none": 0.0
+      }
+    ],
+    "trained": true
+  }
+}

@@ -1,0 +1,201 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --bg-app: #F6F8FB;
+    --bg-surface: #FFFFFF;
+    --bg-surface-subtle: #F8FAFC;
+    --bg-surface-elevated: #F1F5F9;
+    --border-subtle: #EDF2F7;
+    --border-main: #E2E8F0;
+    --border-focus: #0F766E;
+    
+    --text-primary: #0F172A;
+    --text-secondary: #475569;
+    --text-muted: #64748B;
+    
+    --clinical-teal: #0F766E;
+    --clinical-teal-hover: #115E59;
+    --clinical-teal-light: #F0FDFA;
+    --clinical-teal-border: #CCFBF1;
+    
+    --clinical-blue: #0284C7;
+    --clinical-blue-light: #F0F9FF;
+    --clinical-blue-border: #BAE6FD;
+    
+    --clinical-emerald: #059669;
+    --clinical-emerald-light: #ECFDF5;
+    --clinical-emerald-border: #A7F3D0;
+    
+    --clinical-amber: #D97706;
+    --clinical-amber-light: #FFFBEB;
+    --clinical-amber-border: #FDE68A;
+    
+    --clinical-red: #DC2626;
+    --clinical-red-light: #FEF2F2;
+    --clinical-red-border: #FECACA;
+    
+    --shadow-card: 0 1px 3px 0 rgba(15, 23, 42, 0.05), 0 1px 2px -1px rgba(15, 23, 42, 0.05);
+    --shadow-card-hover: 0 6px 16px -2px rgba(15, 23, 42, 0.08), 0 2px 6px -2px rgba(15, 23, 42, 0.04);
+    --shadow-dropdown: 0 10px 25px -5px rgba(15, 23, 42, 0.1), 0 8px 10px -6px rgba(15, 23, 42, 0.06);
+
+    /* ─── CLINICAL MOTION TOKENS ─── */
+    --motion-fast: 180ms;
+    --motion-medium: 320ms;
+    --motion-slow: 650ms;
+    --motion-ambient: 24s;
+    --ease-clinical: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    height: 100%;
+    -webkit-text-size-adjust: 100%;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  body {
+    background-color: var(--bg-app);
+    color: var(--text-primary);
+    font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    overflow-x: hidden;
+    height: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  #root {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+/* ─── ENTERPRISE CLINICAL CARD SYSTEM ──────────────────── */
+.clinical-card {
+  background-color: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 0.75rem; /* 12px */
+  box-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.04), 0 1px 2px -1px rgba(15, 23, 42, 0.04);
+  transition: transform var(--motion-fast) var(--ease-clinical),
+              box-shadow var(--motion-fast) var(--ease-clinical),
+              border-color var(--motion-fast) var(--ease-clinical);
+}
+
+.clinical-card-hover:hover {
+  border-color: #CBD5E1;
+  box-shadow: 0 6px 16px -2px rgba(15, 23, 42, 0.07), 0 2px 6px -2px rgba(15, 23, 42, 0.04);
+  transform: translateY(-2px);
+}
+
+.clinical-card-elevated {
+  background-color: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 1rem; /* 16px */
+  box-shadow: 0 4px 14px 0 rgba(15, 23, 42, 0.05);
+}
+
+/* ─── LIGHT CLINICAL BACKGROUND PATTERN ────────────────── */
+.bg-clinical-grid {
+  background-size: 32px 32px;
+  background-image: 
+    linear-gradient(to right, rgba(15, 23, 42, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(15, 23, 42, 0.03) 1px, transparent 1px);
+}
+
+/* ─── CLINICAL ACCENT TEXT & STYLES ────────────────────── */
+.clinical-teal-text {
+  color: #0F766E;
+}
+
+.clinical-title {
+  color: #0F172A;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.clinical-label {
+  color: #64748B;
+  font-size: 0.6875rem; /* 11px */
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.clinical-value {
+  color: #0F172A;
+  font-weight: 700;
+}
+
+/* ─── CALM TELEMETRY & BREATHING ANIMATIONS ────────────── */
+@keyframes calmPulse {
+  0% { transform: scale(0.96); opacity: 0.85; box-shadow: 0 0 0 0 rgba(5, 150, 105, 0.35); }
+  70% { transform: scale(1); opacity: 1; box-shadow: 0 0 0 5px rgba(5, 150, 105, 0); }
+  100% { transform: scale(0.96); opacity: 0.85; box-shadow: 0 0 0 0 rgba(5, 150, 105, 0); }
+}
+
+.telemetry-pulse {
+  animation: calmPulse 2.8s infinite cubic-bezier(0.66, 0, 0, 1);
+}
+
+@keyframes copilotBreath {
+  0% { box-shadow: 0 4px 12px 0 rgba(15, 118, 110, 0.25); }
+  50% { box-shadow: 0 8px 24px 2px rgba(15, 118, 110, 0.38); }
+  100% { box-shadow: 0 4px 12px 0 rgba(15, 118, 110, 0.25); }
+}
+
+.ai-copilot-breathing {
+  animation: copilotBreath 4.5s infinite ease-in-out;
+}
+
+/* ─── CLEAN SCROLLBAR FOR DATA TABLES & SHELLS ─────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #F1F5F9;
+}
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+}
+
+/* Table styling helpers */
+.clinical-table th {
+  background-color: #F8FAFC;
+  color: #475569;
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid #E2E8F0;
+  padding: 0.75rem 1rem;
+}
+
+.clinical-table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #F1F5F9;
+  color: #1E293B;
+  font-size: 0.8125rem;
+}
+
+.clinical-table tr:hover td {
+  background-color: #F8FAFC;
+}
+
+/* ─── REDUCED MOTION ACCESSIBILITY ─────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

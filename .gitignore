@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Build outputs
+frontend/dist/
+dist/
+
+# Local databases & logs
+*.db
+*.sqlite
+*.sqlite3
+*.log
+
+# Env & OS files
+.env
+.env.local
+.DS_Store
+.vscode/
+.idea/
+.vercel
