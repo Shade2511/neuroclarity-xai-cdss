@@ -273,7 +273,7 @@ export const ResearchDataPage: React.FC = () => {
                   </td>
                 </tr>
               ) : (
-                patients.map((pt) => (
+                (patients || []).map((pt) => (
                   <tr key={pt.study_id || pt.id}>
                     <td className="font-bold text-[#0F172A]">{pt.study_id}</td>
                     <td className="text-[#475569]">{pt.age}y {pt.sex} (BMI {pt.bmi})</td>
@@ -310,7 +310,7 @@ export const ResearchDataPage: React.FC = () => {
           ) : patients.length === 0 ? (
             <div className="text-center py-8 text-xs text-[#64748B]">No patient records found.</div>
           ) : (
-            patients.map((pt) => (
+            (patients || []).map((pt) => (
               <div key={pt.study_id || pt.id} className="p-4 bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl space-y-2.5">
                 <div className="flex items-center justify-between">
                   <div>

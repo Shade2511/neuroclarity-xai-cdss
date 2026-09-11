@@ -99,12 +99,12 @@ export const ExplainabilityPage: React.FC = () => {
           <select
             value={selectedPatient?.id || ''}
             onChange={(e) => {
-              const p = patients.find((pt) => pt.id === e.target.value);
+              const p = (patients || []).find((pt) => pt.id === e.target.value);
               if (p) setSelectedPatient(p);
             }}
             className="bg-[#F8FAFC] border border-[#CBD5E1] text-xs text-[#0F172A] font-semibold rounded-lg px-3 py-2 focus:outline-none focus:border-[#0F766E]"
           >
-            {patients.map((p) => (
+            {(patients || []).map((p) => (
               <option key={p.id} value={p.id}>
                 {p.study_id || p.id} ({p.age}y {p.sex})
               </option>

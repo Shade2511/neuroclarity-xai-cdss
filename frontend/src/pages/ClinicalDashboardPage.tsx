@@ -73,9 +73,10 @@ export const ClinicalDashboardPage: React.FC = () => {
       try {
         setLoading(true);
         const pts = await getPatients(50, 0);
-        setPatients(pts.patients);
-        if (!selectedPatient && pts.patients.length > 0) {
-          setSelectedPatient(pts.patients[0]);
+        const patientList = Array.isArray(pts?.patients) ? pts.patients : [];
+        setPatients(patientList);
+        if (!selectedPatient && patientList.length > 0) {
+          setSelectedPatient(patientList[0]);
         }
         const perf = await getPerformance();
         setPerformance(perf);
@@ -202,7 +203,7 @@ export const ClinicalDashboardPage: React.FC = () => {
           <select
             value={selectedPatient?.id || ''}
             onChange={(e) => {
-              const p = patients.find((pt) => pt.id === e.target.value);
+              const p = (patients || []).find((pt) => pt.id === e.target.value);
               if (p) {
                 setSelectedPatient(p);
                 setPrediction(null);
@@ -211,7 +212,7 @@ export const ClinicalDashboardPage: React.FC = () => {
             }}
             className="bg-[#F8FAFC] border border-[#CBD5E1] text-xs text-[#0F172A] font-semibold rounded-lg px-3 py-2 focus:outline-none focus:border-[#0F766E]"
           >
-            {patients.map((p) => (
+            {(patients || []).map((p) => (
               <option key={p.id} value={p.id}>
                 {p.study_id || p.id} ({p.age}y {p.sex}, {p.ad_name || 'SSRI'})
               </option>

@@ -58,7 +58,7 @@ export const useAppStore = create<AppState>((set) => ({
   ],
 
   setSelectedPatient: (patient) => set({ selectedPatient: patient }),
-  setPatients: (patients) => set({ patients }),
+  setPatients: (patients) => set({ patients: Array.isArray(patients) ? patients : [] }),
   setPrediction: (prediction) => set({ prediction }),
   setExplanation: (explanation) => set({ explanation }),
   setSelectedModel: (selectedModel) => set({ selectedModel }),

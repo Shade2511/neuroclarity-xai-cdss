@@ -98,12 +98,12 @@ export const ReportsPage: React.FC = () => {
           <select
             value={selectedPatient?.study_id || selectedPatient?.id || ''}
             onChange={(e) => {
-              const found = patients.find((pt) => pt.study_id === e.target.value || pt.id === e.target.value);
+              const found = (patients || []).find((pt) => pt.study_id === e.target.value || pt.id === e.target.value);
               if (found) setSelectedPatient(found);
             }}
             className="bg-[#F8FAFC] border border-[#CBD5E1] rounded-lg px-3 py-2 text-xs font-semibold text-[#0F172A] focus:border-[#0F766E]"
           >
-            {patients.map((pt) => (
+            {(patients || []).map((pt) => (
               <option key={pt.study_id || pt.id} value={pt.study_id || pt.id}>
                 {pt.study_id} ({pt.age}y {pt.sex} • {pt.ad_name})
               </option>

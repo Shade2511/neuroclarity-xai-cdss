@@ -1,20 +1,46 @@
-import React, { useRef, useMemo } from 'react';
+import React, { Component, ErrorInfo, ReactNode, useRef, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Float, OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
 
-// Synaptic Nodes Cluster (Light Clinical Theme)
+// ── WebGL support detection (safe for all browsers/mobile) ──────────────────
+function isWebGLSupported(): boolean {
+  try {
+    const canvas = document.createElement('canvas');
+    const ctx =
+      canvas.getContext('webgl2') ||
+      canvas.getContext('webgl') ||
+      canvas.getContext('experimental-webgl');
+    return !!ctx;
+  } catch {
+    return false;
+  }
+}
+
+// ── Error boundary that catches Three.js / R3F render errors ─────────────────
+interface EBState { hasError: boolean }
+class WebGLErrorBoundary extends Component<{ children: ReactNode; fallback?: ReactNode }, EBState> {
+  state: EBState = { hasError: false };
+  static getDerivedStateFromError(): EBState { return { hasError: true }; }
+  componentDidCatch(error: Error, info: ErrorInfo) {
+    console.warn('[NeuralScene] WebGL render error (graceful degradation):', error.message, info.componentStack);
+  }
+  render() {
+    if (this.state.hasError) return this.props.fallback ?? null;
+    return this.props.children;
+  }
+}
+
+// ── Synaptic Nodes Cluster (Light Clinical Theme) ────────────────────────────
 function SynapticNetwork({ count = 46 }: { count?: number }) {
   const pointsRef = useRef<THREE.Points>(null);
   const linesRef = useRef<THREE.LineSegments>(null);
 
-  // Generate nodes in neurological distribution
   const { positions, colors, linePositions } = useMemo(() => {
     const pos = new Float32Array(count * 3);
     const col = new Float32Array(count * 3);
     const rawNodes: THREE.Vector3[] = [];
 
-    // Calm Clinical color palette: Medical Teal, Blue, Slate
     const colorChoices = [
       new THREE.Color('#0F766E'),
       new THREE.Color('#0284C7'),
@@ -44,7 +70,6 @@ function SynapticNetwork({ count = 46 }: { count?: number }) {
       rawNodes.push(new THREE.Vector3(x, y, z));
     }
 
-    // Connect nearby nodes with subtle filaments
     const lineCoords: number[] = [];
     for (let i = 0; i < count; i++) {
       for (let j = i + 1; j < count; j++) {
@@ -77,45 +102,24 @@ function SynapticNetwork({ count = 46 }: { count?: number }) {
 
   return (
     <group>
-      {/* Synaptic Nodes */}
       <points ref={pointsRef}>
         <bufferGeometry>
-          <bufferAttribute
-            attach="attributes-position"
-            args={[positions, 3]}
-          />
-          <bufferAttribute
-            attach="attributes-color"
-            args={[colors, 3]}
-          />
+          <bufferAttribute attach="attributes-position" args={[positions, 3]} />
+          <bufferAttribute attach="attributes-color" args={[colors, 3]} />
         </bufferGeometry>
-        <pointsMaterial
-          size={0.12}
-          vertexColors
-          transparent
-          opacity={0.85}
-        />
+        <pointsMaterial size={0.12} vertexColors transparent opacity={0.85} />
       </points>
 
-      {/* Axon Filaments */}
       <lineSegments ref={linesRef}>
         <bufferGeometry>
-          <bufferAttribute
-            attach="attributes-position"
-            args={[linePositions, 3]}
-          />
+          <bufferAttribute attach="attributes-position" args={[linePositions, 3]} />
         </bufferGeometry>
-        <lineBasicMaterial
-          color="#94A3B8"
-          transparent
-          opacity={0.35}
-        />
+        <lineBasicMaterial color="#94A3B8" transparent opacity={0.35} />
       </lineSegments>
     </group>
   );
 }
 
-// Central Core: Transparent Medical Resonance Orb
 function MedicalCore() {
   const meshRef = useRef<THREE.Mesh>(null);
   const ringRef1 = useRef<THREE.Mesh>(null);
@@ -134,53 +138,86 @@ function MedicalCore() {
 
   return (
     <Float speed={1.2} rotationIntensity={0.2} floatIntensity={0.4}>
-      {/* Inner Icosahedron */}
       <mesh ref={meshRef}>
         <icosahedronGeometry args={[1.05, 1]} />
-        <meshStandardMaterial
-          color="#0F766E"
-          wireframe
-          transparent
-          opacity={0.3}
-        />
+        <meshStandardMaterial color="#0F766E" wireframe transparent opacity={0.3} />
       </mesh>
-
-      {/* Concentric Ring */}
       <mesh ref={ringRef1}>
         <torusGeometry args={[1.65, 0.015, 16, 80]} />
-        <meshStandardMaterial
-          color="#0284C7"
-          transparent
-          opacity={0.4}
-        />
+        <meshStandardMaterial color="#0284C7" transparent opacity={0.4} />
       </mesh>
     </Float>
   );
 }
 
-export const NeuralScene: React.FC<{ className?: string }> = ({ className = '' }) => {
-  return (
-    <div className={`w-full h-full min-h-[300px] relative pointer-events-auto select-none ${className}`}>
-      <Canvas
-        camera={{ position: [0, 0, 5.5], fov: 42 }}
-        gl={{ antialias: true, alpha: true }}
-      >
-        <ambientLight intensity={0.9} />
-        <directionalLight position={[5, 8, 5]} intensity={1.0} color="#FFFFFF" />
-        <directionalLight position={[-5, -5, -5]} intensity={0.5} color="#E2E8F0" />
-        
-        <MedicalCore />
-        <SynapticNetwork count={48} />
+// ── Lightweight CSS-only fallback for devices without WebGL ──────────────────
+const NeuralSceneFallback: React.FC<{ className?: string }> = ({ className = '' }) => (
+  <div
+    className={`w-full h-full min-h-[300px] relative overflow-hidden rounded-xl bg-gradient-to-br from-[#F0FDFA] to-[#F0F9FF] flex items-center justify-center ${className}`}
+    aria-hidden="true"
+  >
+    {/* Static decorative SVG — no WebGL required */}
+    <svg
+      viewBox="0 0 300 300"
+      className="w-48 h-48 opacity-30"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <circle cx="150" cy="150" r="80" stroke="#0F766E" strokeWidth="1" fill="none" />
+      <circle cx="150" cy="150" r="50" stroke="#0284C7" strokeWidth="0.8" fill="none" />
+      <circle cx="150" cy="150" r="20" stroke="#0F766E" strokeWidth="1.5" fill="none" />
+      {[0, 45, 90, 135, 180, 225, 270, 315].map((angle) => {
+        const rad = (angle * Math.PI) / 180;
+        const x1 = 150 + Math.cos(rad) * 25;
+        const y1 = 150 + Math.sin(rad) * 25;
+        const x2 = 150 + Math.cos(rad) * 75;
+        const y2 = 150 + Math.sin(rad) * 75;
+        return <line key={angle} x1={x1} y1={y1} x2={x2} y2={y2} stroke="#64748B" strokeWidth="0.5" opacity="0.6" />;
+      })}
+    </svg>
+  </div>
+);
 
-        <OrbitControls
-          enableZoom={false}
-          enablePan={false}
-          autoRotate
-          autoRotateSpeed={0.4}
-          maxPolarAngle={Math.PI / 1.7}
-          minPolarAngle={Math.PI / 2.5}
-        />
-      </Canvas>
-    </div>
+// ── Public export with full protection ───────────────────────────────────────
+export const NeuralScene: React.FC<{ className?: string }> = ({ className = '' }) => {
+  // Check WebGL support before mounting Canvas (prevents crash on mobile Safari)
+  const webGLSupported = React.useMemo(() => isWebGLSupported(), []);
+
+  if (!webGLSupported) {
+    return <NeuralSceneFallback className={className} />;
+  }
+
+  return (
+    <WebGLErrorBoundary fallback={<NeuralSceneFallback className={className} />}>
+      <div className={`w-full h-full min-h-[300px] relative pointer-events-auto select-none ${className}`}>
+        <Canvas
+          camera={{ position: [0, 0, 5.5], fov: 42 }}
+          gl={{ antialias: true, alpha: true, failIfMajorPerformanceCaveat: false }}
+          onCreated={({ gl }) => {
+            // Explicit error handling for context loss on mobile
+            const canvas = gl.domElement;
+            canvas.addEventListener('webglcontextlost', (e) => {
+              e.preventDefault();
+              console.warn('[NeuralScene] WebGL context lost — scene paused.');
+            }, false);
+          }}
+        >
+          <ambientLight intensity={0.9} />
+          <directionalLight position={[5, 8, 5]} intensity={1.0} color="#FFFFFF" />
+          <directionalLight position={[-5, -5, -5]} intensity={0.5} color="#E2E8F0" />
+
+          <MedicalCore />
+          <SynapticNetwork count={48} />
+
+          <OrbitControls
+            enableZoom={false}
+            enablePan={false}
+            autoRotate
+            autoRotateSpeed={0.4}
+            maxPolarAngle={Math.PI / 1.7}
+            minPolarAngle={Math.PI / 2.5}
+          />
+        </Canvas>
+      </div>
+    </WebGLErrorBoundary>
   );
 };

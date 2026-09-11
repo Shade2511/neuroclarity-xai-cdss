@@ -75,12 +75,12 @@ export const FollowUpPage: React.FC = () => {
         <select
           value={selectedPatient?.id || ''}
           onChange={(e) => {
-            const pt = patients.find((p) => p.id === e.target.value);
+            const pt = (patients || []).find((p) => p.id === e.target.value);
             if (pt) setSelectedPatient(pt);
           }}
           className="bg-[#F8FAFC] border border-[#CBD5E1] text-xs text-[#0F172A] font-semibold rounded-lg px-3 py-2 focus:outline-none focus:border-[#0F766E]"
         >
-          {patients.map((pt) => (
+          {(patients || []).map((pt) => (
             <option key={pt.id} value={pt.id}>
               {pt.study_id || pt.id} ({pt.age}y {pt.sex}) - {pt.response_class || 'Responder'}
             </option>

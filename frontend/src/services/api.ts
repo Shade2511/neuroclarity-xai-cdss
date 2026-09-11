@@ -26,9 +26,27 @@ const api = axios.create({
   timeout: 8000,
 });
 
+// Intercept HTML responses caused by SPA catch-all rewrites (e.g. Vercel /api/* -> /index.html)
+api.interceptors.response.use(
+  (response) => {
+    const contentType = String(response.headers?.['content-type'] || '');
+    if (
+      (typeof response.data === 'string' && (response.data.includes('<!doctype html') || response.data.includes('<html'))) ||
+      contentType.includes('text/html')
+    ) {
+      return Promise.reject(new Error('[NeuroClarity API] Received HTML response instead of JSON.'));
+    }
+    return response;
+  },
+  (error) => Promise.reject(error)
+);
+
 export const getHealth = async () => {
   try {
     const res = await api.get('/health');
+    if (!res?.data || typeof res.data !== 'object') {
+      return EdgeClinicalEngine.getHealth();
+    }
     return res.data;
   } catch (err) {
     console.info('[NeuroClarity] Utilizing Resilient In-Browser Edge Clinical Engine.');
@@ -53,6 +71,9 @@ export const getPatients = async (
     if (drugClass) params.append('drug_class', drugClass);
 
     const res = await api.get(`/patients?${params.toString()}`);
+    if (!res?.data || !Array.isArray(res.data.patients)) {
+      return EdgeClinicalEngine.getPatients(limit, offset, search, outcome, drugClass);
+    }
     return res.data;
   } catch (err) {
     return EdgeClinicalEngine.getPatients(limit, offset, search, outcome, drugClass);
@@ -116,6 +137,9 @@ export const getAssessments = async (patientId: string): Promise<Assessment[]> =
 export const predict = async (patientId: string, modelName: ModelName = 'random_forest'): Promise<PredictionResult> => {
   try {
     const res = await api.post('/predict', { patient_id: patientId, model_name: modelName });
+    if (!res?.data || typeof res.data !== 'object' || !res.data.classification) {
+      return EdgeClinicalEngine.predict(patientId, modelName);
+    }
     return res.data;
   } catch (err) {
     return EdgeClinicalEngine.predict(patientId, modelName);
@@ -125,6 +149,9 @@ export const predict = async (patientId: string, modelName: ModelName = 'random_
 export const explain = async (patientId: string, modelName: ModelName = 'random_forest'): Promise<ExplainResult> => {
   try {
     const res = await api.post('/explain', { patient_id: patientId, model_name: modelName });
+    if (!res?.data || typeof res.data !== 'object' || !res.data.shap_local) {
+      return EdgeClinicalEngine.explain(patientId, modelName);
+    }
     return res.data;
   } catch (err) {
     return EdgeClinicalEngine.explain(patientId, modelName);
@@ -157,6 +184,9 @@ export const getAuditLogs = async (limit = 50) => {
 export const getModels = async (): Promise<Record<string, ModelInfo>> => {
   try {
     const res = await api.get('/models');
+    if (!res?.data || typeof res.data !== 'object' || !res.data.random_forest) {
+      return EdgeClinicalEngine.getModels();
+    }
     return res.data;
   } catch (err) {
     return EdgeClinicalEngine.getModels();
@@ -166,6 +196,9 @@ export const getModels = async (): Promise<Record<string, ModelInfo>> => {
 export const getPerformance = async (): Promise<Record<string, { performance: ModelPerformance; cv: any; bootstrap: any; version?: string }>> => {
   try {
     const res = await api.get('/performance');
+    if (!res?.data || typeof res.data !== 'object' || !res.data.random_forest) {
+      return EdgeClinicalEngine.getPerformance();
+    }
     return res.data;
   } catch (err) {
     return EdgeClinicalEngine.getPerformance();
@@ -175,6 +208,9 @@ export const getPerformance = async (): Promise<Record<string, { performance: Mo
 export const getValidation = async () => {
   try {
     const res = await api.get('/validation');
+    if (!res?.data || typeof res.data !== 'object') {
+      return EdgeClinicalEngine.getValidation();
+    }
     return res.data;
   } catch (err) {
     return EdgeClinicalEngine.getValidation();
@@ -193,6 +229,9 @@ export const trainModels = async () => {
 export const getDatasetStats = async () => {
   try {
     const res = await api.get('/dataset/stats');
+    if (!res?.data || typeof res.data !== 'object' || !res.data.total_cohort_size) {
+      return EdgeClinicalEngine.getDatasetStats();
+    }
     return res.data;
   } catch (err) {
     return EdgeClinicalEngine.getDatasetStats();
@@ -202,6 +241,10 @@ export const getDatasetStats = async () => {
 export const getDatasetPatients = async (limit = 50, offset = 0): Promise<{ total: number; patients: any[]; demo_label: string }> => {
   try {
     const res = await api.get(`/dataset/patients?limit=${limit}&offset=${offset}`);
+    if (!res?.data || !Array.isArray(res.data.patients)) {
+      const pts = await EdgeClinicalEngine.getPatients(limit, offset);
+      return { total: pts.total, patients: pts.patients, demo_label: 'Synthetic Cohort N=320' };
+    }
     return res.data;
   } catch (err) {
     const pts = await EdgeClinicalEngine.getPatients(limit, offset);
@@ -212,6 +255,9 @@ export const getDatasetPatients = async (limit = 50, offset = 0): Promise<{ tota
 export const getDCA = async (modelName: string): Promise<{ dca: DCAPoint[]; model: string }> => {
   try {
     const res = await api.get(`/dca/${modelName}`);
+    if (!res?.data || !Array.isArray(res.data.dca)) {
+      return EdgeClinicalEngine.getDCA(modelName);
+    }
     return res.data;
   } catch (err) {
     return EdgeClinicalEngine.getDCA(modelName);
@@ -237,6 +283,9 @@ export const submitFeedback = async (data: {
 export const getReport = async (patientId: string, modelName = 'random_forest') => {
   try {
     const res = await api.get(`/reports/${patientId}?model_name=${modelName}`);
+    if (!res?.data || typeof res.data !== 'object' || !res.data.patient) {
+      return EdgeClinicalEngine.getReport(patientId, modelName);
+    }
     return res.data;
   } catch (err) {
     return EdgeClinicalEngine.getReport(patientId, modelName);
