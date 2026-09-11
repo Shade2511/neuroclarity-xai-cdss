@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Brain, Cpu, Sparkles, CheckCircle2, ShieldCheck, Activity } from 'lucide-react';
+import { Brain, Cpu, Sparkles, CheckCircle2, Activity, X } from 'lucide-react';
 
 interface PredictionSequenceOverlayProps {
   isVisible: boolean;
@@ -16,6 +16,7 @@ export const PredictionSequenceOverlay: React.FC<PredictionSequenceOverlayProps>
   modelName = 'Random Forest',
 }) => {
   const [step, setStep] = useState(0);
+  const [isCompleted, setIsCompleted] = useState(false);
 
   const steps = [
     {
@@ -68,23 +69,31 @@ export const PredictionSequenceOverlay: React.FC<PredictionSequenceOverlayProps>
   useEffect(() => {
     if (!isVisible) {
       setStep(0);
+      setIsCompleted(false);
       return;
     }
 
     setStep(0);
-    const stepInterval = setInterval(() => {
-      setStep((prev) => {
-        if (prev < steps.length - 1) {
-          return prev + 1;
-        } else {
-          clearInterval(stepInterval);
-          return prev;
-        }
-      });
-    }, 380);
+    setIsCompleted(false);
 
-    return () => clearInterval(stepInterval);
-  }, [isVisible]);
+    let current = 0;
+    const interval = setInterval(() => {
+      current += 1;
+      if (current < steps.length) {
+        setStep(current);
+      } else {
+        clearInterval(interval);
+        setIsCompleted(true);
+        // Auto-dismiss smoothly after user sees all green checkmarks
+        const timeout = setTimeout(() => {
+          onComplete?.();
+        }, 850);
+        return () => clearTimeout(timeout);
+      }
+    }, 550);
+
+    return () => clearInterval(interval);
+  }, [isVisible, onComplete, steps.length]);
 
   return (
     <AnimatePresence>
@@ -94,14 +103,14 @@ export const PredictionSequenceOverlay: React.FC<PredictionSequenceOverlayProps>
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.25 }}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/35 backdrop-blur-xs p-4"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-xs p-4"
         >
           <motion.div
             initial={{ scale: 0.95, y: 10, opacity: 0 }}
             animate={{ scale: 1, y: 0, opacity: 1 }}
             exit={{ scale: 0.95, y: 10, opacity: 0 }}
             transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="bg-white border border-[#E2E8F0] rounded-2xl shadow-2xl p-6 max-w-lg w-full space-y-5 text-[#0F172A]"
+            className="bg-white border border-[#E2E8F0] rounded-2xl shadow-2xl p-6 max-w-lg w-full space-y-5 text-[#0F172A] relative"
           >
             {/* Header */}
             <div className="flex items-center justify-between border-b border-[#E2E8F0] pb-3">
@@ -114,44 +123,57 @@ export const PredictionSequenceOverlay: React.FC<PredictionSequenceOverlayProps>
                   <p className="text-[11px] text-[#64748B]">Multi-Tiered Algorithmic Computation</p>
                 </div>
               </div>
-              <span className="text-xs font-semibold text-[#0F766E] bg-[#F0FDFA] px-2.5 py-0.5 rounded-full border border-[#CCFBF1]">
-                STEP {step + 1} OF {steps.length}
-              </span>
+              <div className="flex items-center space-x-2">
+                <span className={`text-xs font-semibold px-2.5 py-0.5 rounded-full border ${
+                  isCompleted 
+                    ? 'text-[#059669] bg-[#ECFDF5] border-[#A7F3D0]' 
+                    : 'text-[#0F766E] bg-[#F0FDFA] border-[#CCFBF1]'
+                }`}>
+                  {isCompleted ? '✓ PIPELINE COMPLETE' : `STEP ${step + 1} OF ${steps.length}`}
+                </span>
+                <button
+                  onClick={() => onComplete?.()}
+                  title="Close animation"
+                  className="p-1 rounded-md text-[#94A3B8] hover:text-[#0F172A] hover:bg-[#F1F5F9] cursor-pointer transition-colors"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
             </div>
 
             {/* Visual Step Timeline */}
             <div className="space-y-2.5">
               {steps.map((s, idx) => {
                 const Icon = s.icon;
-                const isCurrent = idx === step;
-                const isCompleted = idx < step;
+                const isStepCompleted = isCompleted || idx < step;
+                const isCurrent = !isCompleted && idx === step;
 
                 return (
                   <motion.div
                     key={s.id}
                     initial={{ opacity: 0.4 }}
                     animate={{
-                      opacity: isCurrent || isCompleted ? 1 : 0.4,
+                      opacity: isCurrent || isStepCompleted ? 1 : 0.4,
                       scale: isCurrent ? 1.01 : 1,
                     }}
                     className={`p-3 rounded-xl border flex items-start space-x-3 transition-all ${
-                      isCurrent
-                        ? `${s.bg} ${s.border} ring-1 ring-[#0F766E]/30`
-                        : isCompleted
+                      isStepCompleted
                         ? 'bg-[#F8FAFC] border-[#E2E8F0]'
+                        : isCurrent
+                        ? `${s.bg} ${s.border} ring-1 ring-[#0F766E]/30`
                         : 'bg-white border-[#F1F5F9]'
                     }`}
                   >
                     <div
                       className={`w-6 h-6 rounded-md flex items-center justify-center shrink-0 mt-0.5 ${
-                        isCompleted
+                        isStepCompleted
                           ? 'bg-[#ECFDF5] text-[#059669]'
                           : isCurrent
                           ? `${s.color}`
                           : 'text-[#94A3B8]'
                       }`}
                     >
-                      {isCompleted ? <CheckCircle2 className="w-4 h-4" /> : <Icon className="w-4 h-4" />}
+                      {isStepCompleted ? <CheckCircle2 className="w-4 h-4" /> : <Icon className="w-4 h-4" />}
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-xs font-bold text-[#0F172A]">{s.title}</p>
@@ -171,13 +193,19 @@ export const PredictionSequenceOverlay: React.FC<PredictionSequenceOverlayProps>
                 <motion.div
                   className="h-full bg-gradient-to-r from-[#0F766E] to-[#0284C7]"
                   initial={{ width: '0%' }}
-                  animate={{ width: `${((step + 1) / steps.length) * 100}%` }}
+                  animate={{ width: isCompleted ? '100%' : `${((step + 1) / steps.length) * 100}%` }}
                   transition={{ duration: 0.3 }}
                 />
               </div>
-              <p className="text-[10px] text-center text-[#64748B]">
-                Calibrated XAI computation • Human-in-the-Loop decision support
-              </p>
+              <div className="flex items-center justify-between text-[10px] text-[#64748B]">
+                <span>Calibrated XAI computation • Human-in-the-Loop decision support</span>
+                <button
+                  onClick={() => onComplete?.()}
+                  className="text-[#0F766E] hover:underline font-semibold cursor-pointer"
+                >
+                  Skip to Results →
+                </button>
+              </div>
             </div>
           </motion.div>
         </motion.div>

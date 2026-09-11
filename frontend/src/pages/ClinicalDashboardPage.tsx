@@ -49,6 +49,7 @@ export const ClinicalDashboardPage: React.FC = () => {
 
   const [loading, setLoading] = useState(false);
   const [runningInference, setRunningInference] = useState(false);
+  const [showSequenceOverlay, setShowSequenceOverlay] = useState(false);
   const [inferenceStep, setInferenceStep] = useState(0);
   const [performance, setPerformance] = useState<any>(null);
   const [showReviewModal, setShowReviewModal] = useState(false);
@@ -90,14 +91,11 @@ export const ClinicalDashboardPage: React.FC = () => {
   }, []);
 
   // Run prediction & explanation
-  const handleRunPrediction = useCallback(async () => {
+  const handleRunPrediction = useCallback(async (withOverlay = false) => {
     if (!selectedPatient) return;
     setRunningInference(true);
-    setInferenceStep(0);
-
-    for (let i = 0; i < inferenceSteps.length; i++) {
-      setInferenceStep(i);
-      await new Promise((r) => setTimeout(r, 160));
+    if (withOverlay) {
+      setShowSequenceOverlay(true);
     }
 
     try {
@@ -106,20 +104,22 @@ export const ClinicalDashboardPage: React.FC = () => {
       const expRes = await explain(selectedPatient.id, selectedModel);
       setExplanation(expRes);
       addNotification(`Prediction completed for ${selectedPatient.study_id || selectedPatient.id}: ${predRes.classification}`, 'success');
-      toast.success('Inference & XAI explanations generated!');
+      if (withOverlay) {
+        toast.success('Inference & XAI explanations generated!');
+      }
     } catch (err) {
       console.error(err);
       toast.error('Prediction failed. Make sure backend is running.');
+      setShowSequenceOverlay(false);
     } finally {
       setRunningInference(false);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedPatient, selectedModel]);
+  }, [selectedPatient, selectedModel, addNotification, setPrediction, setExplanation]);
 
-  // Trigger prediction when patient or model changes if none exists
+  // Trigger prediction silently when patient or model changes if none exists
   useEffect(() => {
-    if (selectedPatient && !prediction && !runningInference) {
-      handleRunPrediction();
+    if (selectedPatient && !prediction && !runningInference && !showSequenceOverlay) {
+      handleRunPrediction(false);
     }
   }, [selectedPatient, selectedModel, handleRunPrediction]);
 
@@ -191,7 +191,8 @@ export const ClinicalDashboardPage: React.FC = () => {
 
       {/* Multi-Stage Scientific Prediction Execution Motion Overlay */}
       <PredictionSequenceOverlay
-        isVisible={runningInference}
+        isVisible={showSequenceOverlay}
+        onComplete={() => setShowSequenceOverlay(false)}
         patientId={selectedPatient?.study_id || 'NC-0001'}
         modelName={(selectedModel || 'random_forest').replace('_', ' ')}
       />
@@ -466,11 +467,11 @@ export const ClinicalDashboardPage: React.FC = () => {
             {/* Action Bar */}
             <div className="pt-2 border-t border-[#E2E8F0] flex items-center gap-2">
               <button
-                onClick={handleRunPrediction}
-                disabled={runningInference}
+                onClick={() => handleRunPrediction(true)}
+                disabled={runningInference || showSequenceOverlay}
                 className="flex-1 py-2.5 bg-[#0F766E] hover:bg-[#115E59] text-white font-bold text-xs rounded-lg transition-all shadow-xs flex items-center justify-center space-x-2 cursor-pointer"
               >
-                <RotateCw className={`w-3.5 h-3.5 ${runningInference ? 'animate-spin' : ''}`} />
+                <RotateCw className={`w-3.5 h-3.5 ${runningInference || showSequenceOverlay ? 'animate-spin' : ''}`} />
                 <span>Re-Run AI Inference</span>
               </button>
             </div>

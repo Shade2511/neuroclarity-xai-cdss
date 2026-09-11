@@ -53,12 +53,6 @@ export const PredictionEnginePage: React.FC = () => {
   const handleExecute = async () => {
     if (!selectedPatient) return;
     setRunning(true);
-    setStepIndex(0);
-
-    for (let i = 0; i < pipelineSteps.length; i++) {
-      setStepIndex(i);
-      await new Promise((r) => setTimeout(r, 180));
-    }
 
     try {
       const pred = await predict(selectedPatient.id, selectedModel);
@@ -70,7 +64,6 @@ export const PredictionEnginePage: React.FC = () => {
     } catch (err) {
       console.error(err);
       toast.error('Prediction failed.');
-    } finally {
       setRunning(false);
     }
   };
@@ -82,6 +75,7 @@ export const PredictionEnginePage: React.FC = () => {
       {/* Multi-Stage Scientific Prediction Execution Motion Overlay */}
       <PredictionSequenceOverlay
         isVisible={running}
+        onComplete={() => setRunning(false)}
         patientId={selectedPatient?.study_id || 'NC-0001'}
         modelName={(selectedModel || 'random_forest').replace('_', ' ')}
       />
