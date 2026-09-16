@@ -15,13 +15,13 @@ import {
 import { Layout } from '../components/Layout/Layout';
 import { GlassCard } from '../components/UI/GlassCard';
 import { StatusBadge } from '../components/UI/StatusBadge';
-import { createPatient, createAssessment } from '../services/api';
+import { createPatient, createAssessment, getPatients } from '../services/api';
 import { useAppStore } from '../store';
 import toast, { Toaster } from 'react-hot-toast';
 
 export const PatientAssessmentPage: React.FC = () => {
   const navigate = useNavigate();
-  const { setSelectedPatient, addNotification } = useAppStore();
+  const { setSelectedPatient, setPatients, addNotification } = useAppStore();
   const [step, setStep] = useState(0);
 
   // Form State
@@ -119,12 +119,16 @@ export const PatientAssessmentPage: React.FC = () => {
     try {
       const created = await createPatient(formData as any);
       setSelectedPatient(created.patient);
+      const pts = await getPatients(50, 0);
+      setPatients(pts.patients);
       addNotification(`New patient ${formData.study_id} enrolled successfully.`, 'success');
       toast.success('Patient record saved and enrolled in CDSS!');
       navigate('/dashboard');
     } catch (err) {
       console.error(err);
       toast.error('Could not reach backend. Patient stored locally.');
+      const pts = await getPatients(50, 0);
+      setPatients(pts.patients);
       navigate('/dashboard');
     }
   };

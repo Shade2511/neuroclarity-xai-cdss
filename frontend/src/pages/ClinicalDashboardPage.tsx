@@ -27,7 +27,7 @@ import { LoadingSpinner } from '../components/UI/LoadingSpinner';
 import { PredictionSequenceOverlay } from '../components/Motion/PredictionSequenceOverlay';
 import { PatientDetailsModal } from '../components/UI/PatientDetailsModal';
 import { useAppStore } from '../store';
-import { getPatients, predict, explain, getPerformance, submitFeedback, recordClinicalDecision } from '../services/api';
+import { getPatients, predict, explain, getPerformance, submitFeedback, recordClinicalDecision, loadDemoCohort } from '../services/api';
 import { Patient, ModelName } from '../types';
 import toast, { Toaster } from 'react-hot-toast';
 
@@ -167,7 +167,7 @@ export const ClinicalDashboardPage: React.FC = () => {
           <div className="text-center space-y-4">
             <LoadingSpinner size="lg" />
             <p className="text-xs font-semibold text-[#0F766E]">Initializing Clinical Data Engine...</p>
-            <p className="text-[11px] text-[#64748B]">Loading 320-patient synthetic cohort</p>
+            <p className="text-[11px] text-[#64748B]">Connecting to Local Clinical Registry</p>
           </div>
         </div>
       </Layout>
@@ -219,7 +219,7 @@ export const ClinicalDashboardPage: React.FC = () => {
               </option>
             ))}
           </select>
-          <StatusBadge status="DEMO COHORT" size="sm" />
+          <StatusBadge status={patients && patients.length > 0 ? `REGISTERED (${patients.length})` : 'EMPTY REGISTRY'} size="sm" />
         </div>
 
         {/* Model Selector Tabs */}
@@ -249,6 +249,40 @@ export const ClinicalDashboardPage: React.FC = () => {
         </div>
       </div>
 
+      {(!patients || patients.length === 0) ? (
+        <GlassCard className="p-8 sm:p-14 text-center space-y-5 bg-white border-[#E2E8F0] shadow-xs">
+          <div className="w-16 h-16 rounded-2xl bg-[#F0FDFA] border border-[#CCFBF1] flex items-center justify-center mx-auto text-[#0F766E]">
+            <Brain className="w-8 h-8" />
+          </div>
+          <div className="max-w-md mx-auto space-y-2">
+            <h3 className="text-lg font-bold text-[#0F172A]">No Patient Records in Registry</h3>
+            <p className="text-xs text-[#64748B] leading-relaxed">
+              Your clinical registry is currently clean with no pre-loaded dummy data. Enroll a patient using the structured intake wizard to generate explainable AI predictions and track clinical trajectories.
+            </p>
+          </div>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+            <button
+              onClick={() => navigate('/assessment')}
+              className="px-5 py-2.5 bg-[#0F766E] hover:bg-[#115E59] text-white font-bold text-xs rounded-lg shadow-sm flex items-center space-x-2 transition-all cursor-pointer"
+            >
+              <User className="w-4 h-4" />
+              <span>Register First Patient (CRF)</span>
+            </button>
+            <button
+              onClick={async () => {
+                const demo = await loadDemoCohort();
+                setPatients(demo);
+                if (demo.length > 0) setSelectedPatient(demo[0]);
+                toast.success('Loaded 320-patient synthetic cohort for testing.');
+              }}
+              className="px-4 py-2.5 bg-white hover:bg-[#F8FAFC] border border-[#CBD5E1] text-[#334155] font-semibold text-xs rounded-lg transition-all cursor-pointer"
+            >
+              <span>Load Demo Cohort (Optional)</span>
+            </button>
+          </div>
+        </GlassCard>
+      ) : (
+      <>
       {/* Main 3-Column Clinical Command Workspace */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
         {/* LEFT COLUMN: Patient Baseline & Medication Profile (4 cols) */}
@@ -644,6 +678,8 @@ export const ClinicalDashboardPage: React.FC = () => {
           </GlassCard>
         </div>
       </div>
+      </>
+      )}
 
       {/* Clinician Decision Review Modal */}
       <AnimatePresence>

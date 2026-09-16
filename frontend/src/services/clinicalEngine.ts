@@ -17,65 +17,35 @@ import {
   MedicationItem
 } from '../types';
 
-// In-Memory mutable dataset initialized with 320 synthetic patients
-let patientsData: Patient[] = (rawPatients as any[]).map((p, idx) => ({
-  id: String(p.study_id),
-  patient_id: String(p.study_id),
-  study_id: String(p.study_id),
-  hospital_reg: p.hospital_reg || `HRN-${100000 + idx}`,
-  enrollment_date: p.enrollment_date || '2026-03-15',
-  investigator: p.investigator || 'Dr. Clinical Lead, MD',
-  department: p.department || 'Psychiatry & Clinical Pharmacology',
-  age: Number(p.age || 35),
-  sex: String(p.sex || 'Female'),
-  bmi: Number(p.bmi || 24.0),
-  education: String(p.education || 'Graduate'),
-  employment: String(p.employment || 'Employed'),
-  residence: String(p.residence || 'Urban'),
-  substance_use: String(p.substance_use || 'None'),
-  dep_duration_months: Number(p.dep_duration_months || 12),
-  episode_type: String(p.episode_type || 'First'),
-  num_prev_episodes: Number(p.num_prev_episodes || 0),
-  family_history: String(p.family_history || 'No'),
-  prev_hospitalization: String(p.prev_hospitalization || 'No'),
-  prev_suicide_attempt: String(p.prev_suicide_attempt || 'No'),
-  prev_treatment_response: String(p.prev_treatment_response || 'No prior treatment'),
-  has_hypertension: Number(p.has_hypertension || 0),
-  has_diabetes: Number(p.has_diabetes || 0),
-  has_thyroid: Number(p.has_thyroid || 0),
-  has_cardiovascular: Number(p.has_cardiovascular || 0),
-  has_ckd: Number(p.has_ckd || 0),
-  has_liver: Number(p.has_liver || 0),
-  has_asthma_copd: Number(p.has_asthma_copd || 0),
-  has_epilepsy: Number(p.has_epilepsy || 0),
-  has_migraine: Number(p.has_migraine || 0),
-  comorbidity_count: Number(p.comorbidity_count || 0),
-  ad_name: String(p.ad_name || 'Escitalopram'),
-  ad_class: String(p.ad_class || 'SSRI'),
-  ad_dose_mg: Number(p.ad_dose_mg || 10),
-  ad_frequency: String(p.ad_frequency || 'Once daily'),
-  ad_duration_weeks: Number(p.ad_duration_weeks || 4),
-  madrs_baseline: Number(p.madrs_baseline || 32),
-  gad7_baseline: Number(p.gad7_baseline || 10),
-  mars_score: Number(p.mars_score || 8),
-  tabs_dispensed: Number(p.tabs_dispensed || 60),
-  tabs_remaining: Number(p.tabs_remaining || 5),
-  adherence_pct: Number(p.adherence_pct || 91.7),
-  adr_occurred: Number(p.adr_occurred || 0),
-  adr_severity: String(p.adr_severity || 'None'),
-  naranjo_score: Number(p.naranjo_score || 0),
-  naranjo_class: String(p.naranjo_class || 'Doubtful'),
-  madrs_week2: Number(p.madrs_week2 || Math.round(Number(p.madrs_baseline || 32) * 0.78)),
-  madrs_week4: Number(p.madrs_week4 || Math.round(Number(p.madrs_baseline || 32) * 0.55)),
-  madrs_week6: Number(p.madrs_week6 || Math.round(Number(p.madrs_baseline || 32) * 0.4)),
-  gad7_week6: Number(p.gad7_week6 || Math.round(Number(p.gad7_baseline || 10) * 0.45)),
-  madrs_change: Number(p.madrs_change || 18),
-  madrs_reduction_pct: Number(p.madrs_reduction_pct || 56.2),
-  response_binary: Number(p.response_binary || 1),
-  response_class: String(p.response_class || 'Responder'),
-  is_demo: true,
-  notes: String(p.notes || '')
-}));
+const PATIENTS_STORAGE_KEY = 'neuroclarity_user_patients';
+
+const loadStoredPatients = (): Patient[] => {
+  if (typeof window === 'undefined') return [];
+  try {
+    const raw = localStorage.getItem(PATIENTS_STORAGE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed)) {
+        return parsed;
+      }
+    }
+  } catch (e) {
+    console.warn('[ClinicalEngine] Could not read patients from localStorage:', e);
+  }
+  return []; // Default: clean empty registry! No pre-inserted dummy patients.
+};
+
+const persistPatients = (patients: Patient[]) => {
+  if (typeof window === 'undefined') return;
+  try {
+    localStorage.setItem(PATIENTS_STORAGE_KEY, JSON.stringify(patients));
+  } catch (e) {
+    console.warn('[ClinicalEngine] Could not save patients to localStorage:', e);
+  }
+};
+
+// Initialized as clean empty dataset (persists user-added patients in localStorage)
+let patientsData: Patient[] = loadStoredPatients();
 
 // In-Memory Clinical Decisions & Audit Logs
 let auditLogs: any[] = [
@@ -285,6 +255,7 @@ export const EdgeClinicalEngine = {
     }
 
     patientsData[idx] = updatedPt;
+    persistPatients(patientsData);
 
     auditLogs.unshift({
       id: auditLogs.length + 1,
@@ -359,6 +330,7 @@ export const EdgeClinicalEngine = {
     };
 
     patientsData.unshift(newPt);
+    persistPatients(patientsData);
 
     auditLogs.unshift({
       id: auditLogs.length + 1,
@@ -432,6 +404,21 @@ export const EdgeClinicalEngine = {
 
   predict: async (patientId: string, modelName: ModelName = 'random_forest'): Promise<PredictionResult> => {
     const pt = patientsData.find((p) => p.study_id === patientId || p.id === patientId) || patientsData[0];
+    if (!pt) {
+      return {
+        patient_id: patientId || 'NEW_PATIENT',
+        model: modelName,
+        model_version: 'v2.0',
+        probability_response: 0.5,
+        probability_partial: 0.3,
+        probability_nonresponse: 0.2,
+        classification: 'Awaiting Patient Record',
+        label: 'Pending Intake',
+        disclaimer: 'Clinical decision support output. Does not replace autonomous clinical psychiatric judgment.',
+        timestamp: new Date().toISOString(),
+        explanation_available: false
+      };
+    }
 
     let score = ML_COEFFICIENTS.intercept;
     score += (pt.mars_score || 8) * ML_COEFFICIENTS.mars_score;
@@ -487,6 +474,24 @@ export const EdgeClinicalEngine = {
 
   explain: async (patientId: string, modelName: ModelName = 'random_forest'): Promise<ExplainResult> => {
     const pt = patientsData.find((p) => p.study_id === patientId || p.id === patientId) || patientsData[0];
+    if (!pt) {
+      return {
+        patient_id: patientId || 'NEW_PATIENT',
+        model: modelName,
+        shap_local: {
+          base_value: 0.5,
+          total_shap: 0,
+          contributions: []
+        },
+        lime_local: {
+          local_prediction: [0.5, 0.5],
+          contributions: []
+        },
+        clinical_explanations: [],
+        shap_global: null,
+        timestamp: new Date().toISOString()
+      };
+    }
 
     const contributions: ShapContribution[] = [
       {
@@ -681,6 +686,7 @@ export const EdgeClinicalEngine = {
     });
 
     return {
+      total_cohort_size: total,
       total_patients: total,
       response_distribution: {
         Responder: responders,
@@ -688,9 +694,9 @@ export const EdgeClinicalEngine = {
         'Non-Responder': nonResponders
       },
       ad_class_distribution: adClasses,
-      mean_madrs_baseline: Number((totalMadrs / total).toFixed(1)),
-      mean_adherence_pct: Number((totalAdherence / total).toFixed(1)),
-      responder_rate_pct: Number(((responders / total) * 100).toFixed(1))
+      mean_madrs_baseline: total > 0 ? Number((totalMadrs / total).toFixed(1)) : 0,
+      mean_adherence_pct: total > 0 ? Number((totalAdherence / total).toFixed(1)) : 0,
+      responder_rate_pct: total > 0 ? Number(((responders / total) * 100).toFixed(1)) : 0
     };
   },
 
@@ -777,6 +783,10 @@ export const EdgeClinicalEngine = {
 
   downloadPatientCSV: (patientId: string) => {
     const pt = patientsData.find((p) => p.study_id === patientId || p.id === patientId) || patientsData[0];
+    if (!pt) {
+      alert('No patient record found to export.');
+      return;
+    }
     const headers = Object.keys(pt);
     const values = Object.values(pt).map((v) => `"${String(v).replace(/"/g, '""')}"`);
     const csvContent = `${headers.join(',')}\n${values.join(',')}`;
@@ -788,5 +798,77 @@ export const EdgeClinicalEngine = {
     link.download = `patient_${pt.study_id}_clinical_record.csv`;
     link.click();
     URL.revokeObjectURL(url);
+  },
+
+  loadDemoCohort: () => {
+    const mappedDemo: Patient[] = (rawPatients as any[]).map((p, idx) => ({
+      id: String(p.study_id),
+      patient_id: String(p.study_id),
+      study_id: String(p.study_id),
+      hospital_reg: p.hospital_reg || `HRN-${100000 + idx}`,
+      enrollment_date: p.enrollment_date || '2026-03-15',
+      investigator: p.investigator || 'Dr. Clinical Lead, MD',
+      department: p.department || 'Psychiatry & Clinical Pharmacology',
+      age: Number(p.age || 35),
+      sex: String(p.sex || 'Female'),
+      bmi: Number(p.bmi || 24.0),
+      education: String(p.education || 'Graduate'),
+      employment: String(p.employment || 'Employed'),
+      residence: String(p.residence || 'Urban'),
+      substance_use: String(p.substance_use || 'None'),
+      dep_duration_months: Number(p.dep_duration_months || 12),
+      episode_type: String(p.episode_type || 'First'),
+      num_prev_episodes: Number(p.num_prev_episodes || 0),
+      family_history: String(p.family_history || 'No'),
+      prev_hospitalization: String(p.prev_hospitalization || 'No'),
+      prev_suicide_attempt: String(p.prev_suicide_attempt || 'No'),
+      prev_treatment_response: String(p.prev_treatment_response || 'No prior treatment'),
+      has_hypertension: Number(p.has_hypertension || 0),
+      has_diabetes: Number(p.has_diabetes || 0),
+      has_thyroid: Number(p.has_thyroid || 0),
+      has_cardiovascular: Number(p.has_cardiovascular || 0),
+      has_ckd: Number(p.has_ckd || 0),
+      has_liver: Number(p.has_liver || 0),
+      has_asthma_copd: Number(p.has_asthma_copd || 0),
+      has_epilepsy: Number(p.has_epilepsy || 0),
+      has_migraine: Number(p.has_migraine || 0),
+      comorbidity_count: Number(p.comorbidity_count || 0),
+      ad_name: String(p.ad_name || 'Escitalopram'),
+      ad_class: String(p.ad_class || 'SSRI'),
+      ad_dose_mg: Number(p.ad_dose_mg || 10),
+      ad_frequency: String(p.ad_frequency || 'Once daily'),
+      ad_duration_weeks: Number(p.ad_duration_weeks || 4),
+      madrs_baseline: Number(p.madrs_baseline || 32),
+      gad7_baseline: Number(p.gad7_baseline || 10),
+      mars_score: Number(p.mars_score || 8),
+      tabs_dispensed: Number(p.tabs_dispensed || 60),
+      tabs_remaining: Number(p.tabs_remaining || 5),
+      adherence_pct: Number(p.adherence_pct || 91.7),
+      adr_occurred: Number(p.adr_occurred || 0),
+      adr_severity: String(p.adr_severity || 'None'),
+      naranjo_score: Number(p.naranjo_score || 0),
+      naranjo_class: String(p.naranjo_class || 'Doubtful'),
+      madrs_week2: Number(p.madrs_week2 || Math.round(Number(p.madrs_baseline || 32) * 0.78)),
+      madrs_week4: Number(p.madrs_week4 || Math.round(Number(p.madrs_baseline || 32) * 0.55)),
+      madrs_week6: Number(p.madrs_week6 || Math.round(Number(p.madrs_baseline || 32) * 0.4)),
+      gad7_week6: Number(p.gad7_week6 || Math.round(Number(p.gad7_baseline || 10) * 0.45)),
+      madrs_change: Number(p.madrs_change || 18),
+      madrs_reduction_pct: Number(p.madrs_reduction_pct || 56.2),
+      response_binary: Number(p.response_binary || 1),
+      response_class: String(p.response_class || 'Responder'),
+      is_demo: true,
+      notes: String(p.notes || '')
+    }));
+    patientsData = mappedDemo;
+    persistPatients(patientsData);
+    return patientsData;
+  },
+
+  clearAllPatients: () => {
+    patientsData = [];
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem(PATIENTS_STORAGE_KEY);
+    }
+    return [];
   }
 };

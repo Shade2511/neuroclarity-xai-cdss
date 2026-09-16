@@ -300,4 +300,12 @@ export const downloadPatientCSV = (patientId: string) => {
   EdgeClinicalEngine.downloadPatientCSV(patientId);
 };
 
+export const loadDemoCohort = async (): Promise<Patient[]> => {
+  return EdgeClinicalEngine.loadDemoCohort();
+};
+
+export const clearAllPatients = async (): Promise<Patient[]> => {
+  return EdgeClinicalEngine.clearAllPatients();
+};
+
 export default api;

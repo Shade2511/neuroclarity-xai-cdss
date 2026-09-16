@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   BarChart3,
   Users,
@@ -35,9 +36,10 @@ import { Patient } from '../types';
 import toast, { Toaster } from 'react-hot-toast';
 
 export const ResearchDataPage: React.FC = () => {
+  const navigate = useNavigate();
   const [stats, setStats] = useState<any>(null);
   const [patients, setPatients] = useState<Patient[]>([]);
-  const [totalCount, setTotalCount] = useState(320);
+  const [totalCount, setTotalCount] = useState(0);
   const [searchTerm, setSearchTerm] = useState('');
   const [outcomeFilter, setOutcomeFilter] = useState('');
   const [page, setPage] = useState(0);
@@ -79,19 +81,18 @@ export const ResearchDataPage: React.FC = () => {
     fetchPatients();
   }, [page, searchTerm, outcomeFilter]);
 
-  const responseDist = [
-    { name: 'Responder (≥50%)', value: stats?.response_distribution?.Responder || 186, color: '#059669' },
-    { name: 'Partial (25-49%)', value: stats?.response_distribution?.['Partial Responder'] || 127, color: '#D97706' },
-    { name: 'Non-Responder (<25%)', value: stats?.response_distribution?.['Non-Responder'] || 7, color: '#DC2626' },
+  const responseDist = totalCount > 0 ? [
+    { name: 'Responder (≥50%)', value: stats?.response_distribution?.Responder || 0, color: '#059669' },
+    { name: 'Partial (25-49%)', value: stats?.response_distribution?.['Partial Responder'] || 0, color: '#D97706' },
+    { name: 'Non-Responder (<25%)', value: stats?.response_distribution?.['Non-Responder'] || 0, color: '#DC2626' },
+  ] : [
+    { name: 'Awaiting Registry Intake', value: 1, color: '#E2E8F0' }
   ];
 
-  const adClassData = stats?.ad_class_distribution
+  const adClassData = stats?.ad_class_distribution && Object.keys(stats.ad_class_distribution).length > 0
     ? Object.entries(stats.ad_class_distribution).map(([k, v]) => ({ name: k, count: v }))
     : [
-        { name: 'SSRI', count: 160 },
-        { name: 'SNRI', count: 80 },
-        { name: 'TCA', count: 48 },
-        { name: 'Other', count: 32 },
+        { name: 'Awaiting Intake', count: 0 },
       ];
 
   const handleOpenPatient = (pid: string) => {
@@ -120,11 +121,11 @@ export const ResearchDataPage: React.FC = () => {
           <div className="space-y-1.5">
             <div className="flex items-center space-x-2">
               <StatusBadge status="DATABASE CONNECTED" size="sm" />
-              <span className="text-xs text-[#64748B] font-semibold">Relational Cohort Records (N={totalCount})</span>
+              <span className="text-xs text-[#64748B] font-semibold">Active Clinical Records (N={totalCount})</span>
             </div>
-            <h2 className="text-2xl font-bold text-[#0F172A]">Clinical Research Cohort & Epidemiological Registry</h2>
+            <h2 className="text-2xl font-bold text-[#0F172A]">Clinical Patient Cohort & Epidemiological Registry</h2>
             <p className="text-xs text-[#475569] max-w-2xl leading-relaxed">
-              Real-time queryable patient database records for prospective antidepressant response modeling. Labeled: SYNTHETIC RESEARCH COHORT.
+              Real-time queryable patient database records for prospective antidepressant response modeling and longitudinal outcome tracking.
             </p>
           </div>
 
@@ -268,8 +269,14 @@ export const ResearchDataPage: React.FC = () => {
                 </tr>
               ) : patients.length === 0 ? (
                 <tr>
-                  <td colSpan={8} className="text-center py-8 text-[#64748B]">
-                    No matching patient records found in database.
+                  <td colSpan={8} className="text-center py-10 text-[#64748B]">
+                    <p className="text-xs font-medium mb-3">No patient records found in clinical database.</p>
+                    <button
+                      onClick={() => navigate('/assessment')}
+                      className="px-4 py-2 bg-[#0F766E] hover:bg-[#115E59] text-white text-xs font-bold rounded-lg shadow-2xs inline-flex items-center space-x-1.5 cursor-pointer"
+                    >
+                      <span>+ Register New Patient Intake</span>
+                    </button>
                   </td>
                 </tr>
               ) : (
@@ -308,7 +315,15 @@ export const ResearchDataPage: React.FC = () => {
               Loading database records...
             </div>
           ) : patients.length === 0 ? (
-            <div className="text-center py-8 text-xs text-[#64748B]">No patient records found.</div>
+            <div className="text-center py-10 text-xs text-[#64748B] space-y-3 bg-white p-6 rounded-xl border border-[#E2E8F0]">
+              <p className="font-medium">No patient records enrolled yet.</p>
+              <button
+                onClick={() => navigate('/assessment')}
+                className="px-4 py-2 bg-[#0F766E] hover:bg-[#115E59] text-white text-xs font-bold rounded-lg shadow-2xs inline-flex items-center space-x-1.5 cursor-pointer"
+              >
+                <span>+ Register New Patient Intake</span>
+              </button>
+            </div>
           ) : (
             (patients || []).map((pt) => (
               <div key={pt.study_id || pt.id} className="p-4 bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl space-y-2.5">

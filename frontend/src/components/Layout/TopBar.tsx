@@ -20,7 +20,7 @@ export const TopBar: React.FC<TopBarProps> = ({ title = 'Clinical Command' }) =>
   }>({
     database: 'Connected',
     models_count: 4,
-    patients_in_database: 320
+    patients_in_database: 0
   });
 
   useEffect(() => {
@@ -65,7 +65,7 @@ export const TopBar: React.FC<TopBarProps> = ({ title = 'Clinical Command' }) =>
           <div className={`flex items-center space-x-1.5 ${isDbConnected ? 'text-[#059669]' : 'text-[#DC2626]'}`}>
             <span className={`w-2 h-2 rounded-full ${isDbConnected ? 'bg-[#059669] telemetry-pulse' : 'bg-[#DC2626]'}`} />
             <span className="text-[#334155] font-semibold">
-              {isDbConnected ? `DB Connected (N=${systemHealth.patients_in_database || 320})` : 'DB Offline'}
+              {isDbConnected ? `DB Connected (N=${systemHealth.patients_in_database ?? 0})` : 'DB Offline'}
             </span>
           </div>
 
@@ -78,7 +78,7 @@ export const TopBar: React.FC<TopBarProps> = ({ title = 'Clinical Command' }) =>
 
           <div className="flex items-center space-x-1.5 text-[#0284C7]">
             <span className="w-2 h-2 rounded-full bg-[#0284C7]" />
-            <span className="text-[#334155] font-semibold">Synthetic Cohort v2.0</span>
+            <span className="text-[#334155] font-semibold">Live Patient Registry</span>
           </div>
         </div>
       </div>

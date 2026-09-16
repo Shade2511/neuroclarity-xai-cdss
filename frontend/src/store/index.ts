@@ -45,7 +45,7 @@ export const useAppStore = create<AppState>((set) => ({
   notifications: [
     {
       id: '1',
-      message: 'DEMO MODE: Synthetic demonstration dataset loaded (N=320).',
+      message: 'Clinical Registry initialized. Ready for patient intake and inference.',
       type: 'info',
       timestamp: new Date().toLocaleTimeString(),
     },

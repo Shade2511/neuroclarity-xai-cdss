@@ -21,7 +21,7 @@ export const DisclaimerBanner: React.FC<DisclaimerBannerProps> = ({
             Clinical Decision Support System — Research & Educational Prototype
           </p>
           <p className="text-[#92400E]">
-            This system provides probabilistic predictions based on synthetic demonstration data ($N=320$). It is designed strictly for investigational decision support and does not replace the autonomous medical judgment of a licensed psychiatrist or physician.
+            This clinical decision support system provides probabilistic treatment outcome estimations. It is designed strictly for investigational decision support and does not replace the autonomous medical judgment of a licensed psychiatrist or physician.
           </p>
         </div>
       </div>
@@ -34,7 +34,7 @@ export const DisclaimerBanner: React.FC<DisclaimerBannerProps> = ({
     >
       <AlertCircle className="w-3.5 h-3.5 text-[#D97706] shrink-0" />
       <span>
-        <strong className="text-[#334155]">RESEARCH DEMONSTRATION:</strong> Synthetic Cohort ($N=320$). Decision-support output only — licensed physician review required.
+        <strong className="text-[#334155]">CLINICAL DECISION SUPPORT:</strong> AI probabilistic output only — licensed psychiatrist evaluation and verification required.
       </span>
     </div>
   );
