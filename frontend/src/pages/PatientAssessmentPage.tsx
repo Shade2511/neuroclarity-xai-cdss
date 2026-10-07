@@ -11,6 +11,7 @@ import {
   AlertCircle,
   Plus,
   Trash2,
+  X,
 } from 'lucide-react';
 import { Layout } from '../components/Layout/Layout';
 import { GlassCard } from '../components/UI/GlassCard';
@@ -81,6 +82,7 @@ export const PatientAssessmentPage: React.FC = () => {
     adr_occurred: 0,
     adr_severity: 'None',
     naranjo_score: 0,
+    notes: '',
   });
 
   const steps = [
@@ -115,9 +117,50 @@ export const PatientAssessmentPage: React.FC = () => {
     if (step > 0) setStep(step - 1);
   };
 
+  // Custom display-only comorbidities (UI only, no significance in prediction)
+  const [customConditions, setCustomConditions] = useState<{ id: string; name: string; active: boolean }[]>([]);
+  const [customConditionInput, setCustomConditionInput] = useState('');
+
+  const handleAddCustomCondition = () => {
+    const trimmed = customConditionInput.trim();
+    if (!trimmed) return;
+    if (customConditions.some((c) => c.name.toLowerCase() === trimmed.toLowerCase())) {
+      toast.error('This condition has already been added as a button.');
+      return;
+    }
+    const newCondition = {
+      id: `custom-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
+      name: trimmed,
+      active: true,
+    };
+    setCustomConditions((prev) => [...prev, newCondition]);
+    setCustomConditionInput('');
+    toast.success(`Added "${trimmed}" as button.`);
+  };
+
+  const handleToggleCustomCondition = (id: string) => {
+    setCustomConditions((prev) =>
+      prev.map((c) => (c.id === id ? { ...c, active: !c.active } : c))
+    );
+  };
+
+  const handleRemoveCustomCondition = (id: string) => {
+    setCustomConditions((prev) => prev.filter((c) => c.id !== id));
+  };
+
   const handleSubmit = async () => {
     try {
-      const created = await createPatient(formData as any);
+      const submissionData = { ...formData };
+      if (customConditions.length > 0) {
+        const activeConditions = customConditions.filter((c) => c.active).map((c) => c.name);
+        if (activeConditions.length > 0) {
+          const customNote = `Additional Conditions: ${activeConditions.join(', ')}`;
+          submissionData.notes = submissionData.notes
+            ? `${submissionData.notes} | ${customNote}`
+            : customNote;
+        }
+      }
+      const created = await createPatient(submissionData as any);
       setSelectedPatient(created.patient);
       const pts = await getPatients(50, 0);
       setPatients(pts.patients);
@@ -336,8 +379,12 @@ export const PatientAssessmentPage: React.FC = () => {
 
         {/* STEP 3: Medical Comorbidities */}
         {step === 3 && (
-          <div className="space-y-4">
-            <h3 className="text-sm font-bold text-[#0F172A] uppercase tracking-wider">Medical Co-morbidities Checklist</h3>
+          <div className="space-y-5">
+            <div>
+              <h3 className="text-sm font-bold text-[#0F172A] uppercase tracking-wider">Medical Co-morbidities Checklist</h3>
+              <p className="text-xs text-[#64748B] mt-0.5">Select documented comorbid clinical conditions from the standard diagnostic panel.</p>
+            </div>
+
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs">
               {[
                 { id: 'has_hypertension', label: 'Hypertension' },
@@ -367,6 +414,71 @@ export const PatientAssessmentPage: React.FC = () => {
                   <span>{c.label}</span>
                 </label>
               ))}
+            </div>
+
+            {/* Add Additional Condition */}
+            <div className="pt-4 border-t border-[#E2E8F0] space-y-3">
+              <div>
+                <h4 className="text-xs font-bold text-[#0F172A] uppercase tracking-wider">
+                  Add Additional Condition
+                </h4>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <input
+                  type="text"
+                  value={customConditionInput}
+                  onChange={(e) => setCustomConditionInput(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      handleAddCustomCondition();
+                    }
+                  }}
+                  placeholder="Enter condition name..."
+                  className="flex-1 bg-[#F8FAFC] border border-[#CBD5E1] rounded-lg px-3 py-2 text-xs text-[#0F172A] placeholder-[#94A3B8] focus:border-[#0F766E] focus:outline-none"
+                />
+                <button
+                  type="button"
+                  onClick={handleAddCustomCondition}
+                  className="px-3.5 py-2 bg-[#0F766E] hover:bg-[#0D9488] text-white rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-colors shadow-xs cursor-pointer"
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                  <span>Add Condition</span>
+                </button>
+              </div>
+
+              {/* Rendered Condition Buttons */}
+              {customConditions.length > 0 && (
+                <div className="flex flex-wrap gap-2 pt-1">
+                  {customConditions.map((cond) => (
+                    <button
+                      key={cond.id}
+                      type="button"
+                      onClick={() => handleToggleCustomCondition(cond.id)}
+                      className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium border transition-all cursor-pointer ${
+                        cond.active
+                          ? 'bg-[#F0FDFA] border-[#0F766E] text-[#0F766E] font-semibold'
+                          : 'bg-[#F8FAFC] border-[#E2E8F0] text-[#64748B] hover:bg-white'
+                      }`}
+                      title="Click to toggle; click X to remove"
+                    >
+                      <span className={`w-2 h-2 rounded-full ${cond.active ? 'bg-[#0F766E]' : 'bg-[#CBD5E1]'}`} />
+                      <span>{cond.name}</span>
+                      <span
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleRemoveCustomCondition(cond.id);
+                        }}
+                        className="ml-1 text-[#94A3B8] hover:text-red-500 rounded p-0.5 transition-colors"
+                        title="Remove condition"
+                      >
+                        <X className="w-3.5 h-3.5" />
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         )}
