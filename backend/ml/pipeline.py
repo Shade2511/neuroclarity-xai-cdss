@@ -1,5 +1,5 @@
 """
-NeuroClarity XAI-CDSS — ML Pipeline
+AntiDEP XAI-CDSS — ML Pipeline
 Trains, evaluates, explains multiple models on the synthetic demonstration dataset.
 """
 

@@ -34,7 +34,7 @@ api.interceptors.response.use(
       (typeof response.data === 'string' && (response.data.includes('<!doctype html') || response.data.includes('<html'))) ||
       contentType.includes('text/html')
     ) {
-      return Promise.reject(new Error('[NeuroClarity API] Received HTML response instead of JSON.'));
+      return Promise.reject(new Error('[AntiDEP API] Received HTML response instead of JSON.'));
     }
     return response;
   },
@@ -49,7 +49,7 @@ export const getHealth = async () => {
     }
     return res.data;
   } catch (err) {
-    console.info('[NeuroClarity] Utilizing Resilient In-Browser Edge Clinical Engine.');
+    console.info('[AntiDEP] Utilizing Resilient In-Browser Edge Clinical Engine.');
     return EdgeClinicalEngine.getHealth();
   }
 };

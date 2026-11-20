@@ -1,5 +1,5 @@
 """
-NeuroClarity XAI-CDSS — Database Initialization & Seeding Script
+AntiDEP XAI-CDSS — Database Initialization & Seeding Script
 Populates the relational database from synthetic clinical cohort data.
 """
 import os
@@ -76,6 +76,12 @@ def init_and_seed_db(data_csv_path: str, ml_results: dict = None):
                 has_asthma_copd=int(row['has_asthma_copd']),
                 has_epilepsy=int(row['has_epilepsy']),
                 has_migraine=int(row['has_migraine']),
+                has_schizophrenia=int(row.get('has_schizophrenia', 0) or 0),
+                has_mania=int(row.get('has_mania', 0) or 0),
+                has_bipolar=int(row.get('has_bipolar', 0) or 0),
+                has_ocd=int(row.get('has_ocd', 0) or 0),
+                has_other_psychiatric=int(row.get('has_other_psychiatric', row.get('has_other_psychoaffective', 0)) or 0),
+                has_autoimmune=int(row.get('has_autoimmune', 0) or 0),
                 comorbidity_count=int(row['comorbidity_count']),
                 ad_name=str(row['ad_name']),
                 ad_class=str(row['ad_class']),

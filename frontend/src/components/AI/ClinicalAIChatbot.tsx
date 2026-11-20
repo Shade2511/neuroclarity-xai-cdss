@@ -39,7 +39,7 @@ const INITIAL_MESSAGES: Message[] = [
   {
     id: '1',
     sender: 'ai',
-    text: "Hello, I am the **NeuroClarity Clinical AI Assistant**.\n\nI can assist you with patient treatment response estimations, interpret SHAP/LIME factor attributions, calculate MADRS trajectories, and autonomously navigate any section of this clinical platform.",
+    text: "Hello, I am the **AntiDEP Clinical AI Assistant**.\n\nI can assist you with patient treatment response estimations, interpret SHAP/LIME factor attributions, calculate MADRS trajectories, and autonomously navigate any section of this clinical platform.",
     timestamp: 'Just now',
     tags: ['Clinical Assistant', 'Active'],
     actionButtons: [
@@ -377,7 +377,7 @@ export const ClinicalAIChatbot: React.FC = () => {
                 </div>
                 <div>
                   <div className="flex items-center space-x-2">
-                    <h3 className="font-bold text-xs text-[#0F172A]">NeuroClarity Clinical Assistant</h3>
+                    <h3 className="font-bold text-xs text-[#0F172A]">AntiDEP Clinical Assistant</h3>
                     <span className="px-1.5 py-0.5 rounded bg-[#ECFDF5] text-[#059669] text-[9px] font-bold flex items-center gap-1">
                       <span className="w-1.5 h-1.5 rounded-full bg-[#059669] inline-block" />
                       ACTIVE

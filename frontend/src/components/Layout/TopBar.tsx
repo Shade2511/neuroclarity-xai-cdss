@@ -51,7 +51,7 @@ export const TopBar: React.FC<TopBarProps> = ({ title = 'Clinical Command' }) =>
           <div className="w-7 h-7 rounded-lg bg-[#F0FDFA] border border-[#CCFBF1] flex items-center justify-center">
             <Brain className="w-4 h-4 text-[#0F766E]" />
           </div>
-          <span className="font-bold text-sm text-[#0F172A] tracking-tight">NeuroClarity</span>
+          <span className="font-bold text-sm text-[#0F172A] tracking-tight">AntiDEP</span>
         </div>
 
         {/* Desktop title and subtitle */}

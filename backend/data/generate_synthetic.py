@@ -1,5 +1,5 @@
 """
-NeuroClarity XAI-CDSS — Synthetic Data Generator
+AntiDEP XAI-CDSS — Synthetic Data Generator
 SYNTHETIC DEMONSTRATION DATA — NOT REAL PATIENT DATA
 Uses deterministic seed for reproducibility.
 """
@@ -42,8 +42,16 @@ def generate_dataset():
     has_asthma_copd = rng.choice([0, 1], N, p=[0.90, 0.10])
     has_epilepsy = rng.choice([0, 1], N, p=[0.94, 0.06])
     has_migraine = rng.choice([0, 1], N, p=[0.88, 0.12])
+    has_schizophrenia = rng.choice([0, 1], N, p=[0.95, 0.05])
+    has_mania = rng.choice([0, 1], N, p=[0.94, 0.06])
+    has_bipolar = rng.choice([0, 1], N, p=[0.92, 0.08])
+    has_ocd = rng.choice([0, 1], N, p=[0.90, 0.10])
+    has_other_psychiatric = rng.choice([0, 1], N, p=[0.91, 0.09])
+    has_autoimmune = rng.choice([0, 1], N, p=[0.89, 0.11])
     comorbidity_count = (has_hypertension + has_diabetes + has_thyroid + has_cardiovascular +
-                          has_ckd + has_liver + has_asthma_copd + has_epilepsy + has_migraine)
+                          has_ckd + has_liver + has_asthma_copd + has_epilepsy + has_migraine +
+                          has_schizophrenia + has_mania + has_bipolar + has_ocd +
+                          has_other_psychiatric + has_autoimmune)
 
     # Antidepressant
     ad_classes = rng.choice(['SSRI', 'SNRI', 'TCA', 'Other'], N, p=[0.50, 0.25, 0.15, 0.10])
@@ -137,6 +145,12 @@ def generate_dataset():
         'has_asthma_copd': has_asthma_copd,
         'has_epilepsy': has_epilepsy,
         'has_migraine': has_migraine,
+        'has_schizophrenia': has_schizophrenia,
+        'has_mania': has_mania,
+        'has_bipolar': has_bipolar,
+        'has_ocd': has_ocd,
+        'has_other_psychiatric': has_other_psychiatric,
+        'has_autoimmune': has_autoimmune,
         'comorbidity_count': comorbidity_count,
         'ad_class': ad_classes,
         'ad_name': ad_names,

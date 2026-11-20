@@ -97,7 +97,7 @@ export const ClinicalUtilityPage: React.FC = () => {
               <ReferenceLine y={0} stroke="#94A3B8" />
               <Line type="monotone" dataKey="treat_none" name="Treat None (Net Benefit = 0)" stroke="#94A3B8" strokeWidth={1.5} strokeDasharray="3 3" dot={false} />
               <Line type="monotone" dataKey="treat_all" name="Treat All (Empirical Prescribing)" stroke="#DC2626" strokeWidth={2} strokeDasharray="4 4" dot={false} />
-              <Line type="monotone" dataKey="model" name="NeuroClarity AI Model" stroke="#0F766E" strokeWidth={3} dot />
+              <Line type="monotone" dataKey="model" name="AntiDEP AI Model" stroke="#0F766E" strokeWidth={3} dot />
             </LineChart>
           </ResponsiveContainer>
         </div>
@@ -111,7 +111,7 @@ export const ClinicalUtilityPage: React.FC = () => {
             <span>Why Decision Curve Analysis Matters</span>
           </h4>
           <p className="text-xs text-[#475569] leading-relaxed">
-            Standard statistical metrics (such as AUC) confirm statistical discrimination, but DCA directly quantifies clinical decision usefulness. The NeuroClarity AI model yields higher net benefit than empirical 'treat all' strategies between 20% and 75% thresholds without adding unnecessary clinical burden.
+            Standard statistical metrics (such as AUC) confirm statistical discrimination, but DCA directly quantifies clinical decision usefulness. The AntiDEP AI model yields higher net benefit than empirical 'treat all' strategies between 20% and 75% thresholds without adding unnecessary clinical burden.
           </p>
         </GlassCard>
 

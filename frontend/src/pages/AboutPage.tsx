@@ -15,7 +15,7 @@ import { StatusBadge } from '../components/UI/StatusBadge';
 
 export const AboutPage: React.FC = () => {
   return (
-    <Layout title="About NeuroClarity & Model Card">
+    <Layout title="About AntiDEP & Model Card">
       {/* Header */}
       <GlassCard className="p-6 bg-white border-[#E2E8F0] shadow-xs">
         <div className="space-y-1.5">
@@ -23,7 +23,7 @@ export const AboutPage: React.FC = () => {
             <StatusBadge status="MODEL CARD SPECIFICATION" size="sm" />
             <span className="text-xs text-[#64748B] font-semibold">v1.0.0 Production Prototype</span>
           </div>
-          <h2 className="text-2xl font-bold text-[#0F172A]">NeuroClarity XAI-CDSS Model Card & Architecture</h2>
+          <h2 className="text-2xl font-bold text-[#0F172A]">AntiDEP XAI-CDSS Model Card & Architecture</h2>
           <p className="text-xs text-[#475569] max-w-2xl leading-relaxed">
             Standardized Model Card documenting model intentions, input feature domains, training constraints, known limitations, and multi-agent development workflow.
           </p>
@@ -36,7 +36,7 @@ export const AboutPage: React.FC = () => {
         <GlassCard className="p-5 space-y-3 bg-white">
           <h3 className="text-sm font-bold uppercase text-[#0F766E]">1. Model Details & Purpose</h3>
           <ul className="space-y-2 text-xs text-[#334155]">
-            <li><strong>Model Name:</strong> NeuroClarity Multi-Algorithm Ensemble (RF, LR, DT, XGB)</li>
+            <li><strong>Model Name:</strong> AntiDEP Multi-Algorithm Ensemble (RF, LR, DT, XGB)</li>
             <li><strong>Intended Task:</strong> Binary & probabilistic prediction of ≥50% MADRS score reduction at Week 6 in adult MDD patients.</li>
             <li><strong>Primary Inputs:</strong> 22 structured clinical features (demographics, psychiatric history, MADRS baseline, GAD-7, MARS adherence, ADRs, comorbidities).</li>
             <li><strong>Explainability Layer:</strong> Exact TreeSHAP and Linear SHAP feature attribution + LIME local linear perturbation models.</li>
@@ -64,7 +64,7 @@ export const AboutPage: React.FC = () => {
           <span>Antigravity Multi-Agent Collaborative Architecture</span>
         </h3>
         <p className="text-xs text-[#475569] leading-relaxed">
-          The NeuroClarity XAI-CDSS was architected using specialized AI engineering agents operating collaboratively:
+          The AntiDEP XAI-CDSS was architected using specialized AI engineering agents operating collaboratively:
         </p>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 text-center text-xs pt-2">

@@ -311,7 +311,7 @@ export const ExplainabilityPage: React.FC = () => {
             </div>
 
             <div className="p-5 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] space-y-3 text-xs text-[#475569]">
-              <h4 className="font-bold text-[#0F172A] text-sm">SHAP vs LIME Comparison in NeuroClarity</h4>
+              <h4 className="font-bold text-[#0F172A] text-sm">SHAP vs LIME Comparison in AntiDEP</h4>
               <p className="leading-relaxed">
                 <strong>SHAP (Shapley Additive exPlanations)</strong> provides mathematically consistent Shapley game-theoretic allocations satisfying local accuracy and missingness properties.
               </p>

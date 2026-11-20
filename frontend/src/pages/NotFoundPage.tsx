@@ -13,7 +13,7 @@ export const NotFoundPage: React.FC = () => {
           <div className="w-10 h-10 rounded-xl bg-[#F0FDFA] border border-[#CCFBF1] flex items-center justify-center">
             <Brain className="w-5 h-5 text-[#0F766E]" />
           </div>
-          <span className="text-lg font-extrabold text-[#0F172A]">NeuroClarity</span>
+          <span className="text-lg font-extrabold text-[#0F172A]">AntiDEP</span>
         </div>
 
         {/* 404 Error Display */}
@@ -22,7 +22,7 @@ export const NotFoundPage: React.FC = () => {
           <div>
             <h1 className="text-xl font-bold text-[#0F172A]">Clinical Route Not Found</h1>
             <p className="text-sm text-[#64748B] mt-1 leading-relaxed">
-              The page you're looking for doesn't exist in the NeuroClarity system. Please navigate back to the dashboard.
+              The page you're looking for doesn't exist in the AntiDEP system. Please navigate back to the dashboard.
             </p>
           </div>
 
@@ -45,14 +45,14 @@ export const NotFoundPage: React.FC = () => {
               className="flex-1 py-2.5 px-4 bg-[#0F766E] hover:bg-[#115E59] text-white rounded-lg text-sm font-bold flex items-center justify-center space-x-2 cursor-pointer transition-colors"
             >
               <Home className="w-4 h-4" />
-              <span>Return to NeuroClarity</span>
+              <span>Return to AntiDEP</span>
             </button>
           </div>
         </div>
 
         {/* Footer */}
         <p className="text-xs text-[#94A3B8]">
-          NeuroClarity XAI-CDSS • Explainable AI Clinical Decision Support
+          AntiDEP XAI-CDSS • Explainable AI Clinical Decision Support
         </p>
       </div>
     </div>

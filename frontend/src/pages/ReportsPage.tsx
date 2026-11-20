@@ -127,7 +127,7 @@ export const ReportsPage: React.FC = () => {
           <div>
             <div className="flex items-center space-x-2">
               <Brain className="w-7 h-7 text-[#0F766E]" />
-              <h1 className="text-2xl font-extrabold text-[#0F172A] tracking-tight">NeuroClarity XAI-CDSS</h1>
+              <h1 className="text-2xl font-extrabold text-[#0F172A] tracking-tight">AntiDEP XAI-CDSS</h1>
             </div>
             <p className="text-xs text-[#475569] font-medium mt-0.5">
               Explainable AI Clinical Decision Support System • Department of Psychiatry
@@ -271,7 +271,7 @@ export const ReportsPage: React.FC = () => {
 
         {/* Document Footer */}
         <div className="flex items-center justify-between pt-4 border-t border-[#E2E8F0] text-[10px] text-[#94A3B8]">
-          <span>NeuroClarity XAI-CDSS Platform v2.0 • Relational DB Backed</span>
+          <span>AntiDEP XAI-CDSS Platform v2.0 • Relational DB Backed</span>
           <span>Page 1 of 1 • Confidential Medical Summary</span>
         </div>
       </div>

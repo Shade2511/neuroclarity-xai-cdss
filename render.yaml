@@ -1,18 +1,18 @@
 services:
   - type: web
-    name: neuroclarity-api
+    name: antidep-api
     runtime: docker
     dockerfilePath: ./backend/Dockerfile
     dockerContext: ./backend
     plan: free
     envVars:
       - key: DATABASE_URL
-        value: sqlite:////data/neuroclarity.db
+        value: sqlite:////data/antidep.db
       - key: ALLOWED_ORIGINS
         value: https://neuroclarity-xai-cdss.pages.dev,https://neuroclarity-xai-cdss.pages.dev/
       - key: ENVIRONMENT
         value: production
     disk:
-      name: neuroclarity-data
+      name: antidep-data
       mountPath: /data
       sizeGB: 1

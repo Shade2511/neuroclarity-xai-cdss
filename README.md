@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🧠 NeuroClarity XAI-CDSS
+# 🧠 AntiDEP XAI-CDSS
 
 ### **Explainable AI Clinical Decision Support System for Neurological Diagnostics & Treatment Optimization**
 
@@ -32,7 +32,7 @@
 
 Major Depressive Disorder (MDD) affects over 280 million individuals globally. Standard psychiatric prescribing follows a trial-and-error paradigm where **only ~37% of patients achieve remission during their first antidepressant trial (STAR*D Trial)**. Each failed trial requires 6–8 weeks, incurring substantial emotional burden, worsening morbidity, and lost productivity.
 
-**NeuroClarity XAI-CDSS** bridges the critical gap between predictive machine learning and clinical practice:
+**AntiDEP XAI-CDSS** bridges the critical gap between predictive machine learning and clinical practice:
 - **Transparent Predictions:** Combines 4 validated machine learning models (Logistic Regression, Decision Trees, Random Forest, and Gradient Boosting / XGBoost) with exact TreeSHAP attribution vectors and LIME local surrogate explanations.
 - **Clinician Translation Layer:** Translates complex mathematical game-theory SHAP values into natural-language clinical rationales that doctors can quickly interpret and verify.
 - **Human-in-the-Loop Governance:** AI outputs are advisory probabilities only. The system enforces strict clinician sign-off, clinical decision override logging, and immutable audit trails.
@@ -301,7 +301,7 @@ Interactive Swagger documentation is available at `http://localhost:8000/docs`.
 > [!WARNING]
 > **INVESTIGATIONAL / RESEARCH USE ONLY (SaMD Tier II Concept)**
 > 
-> 1. **Not an Autonomous Diagnostic Device:** NeuroClarity XAI-CDSS is designed as an assistive tool to supplement—never replace—the clinical judgment of licensed psychiatrists or physicians.
+> 1. **Not an Autonomous Diagnostic Device:** AntiDEP XAI-CDSS is designed as an assistive tool to supplement—never replace—the clinical judgment of licensed psychiatrists or physicians.
 > 2. **Human-in-the-Loop Requirement:** All generated probabilities and feature attributions must be reviewed and countersigned by a qualified medical professional prior to making any clinical adjustments.
 > 3. **Synthetic Dataset Notice:** Demonstration data provided within this repository represents synthetic, de-identified clinical cohorts constructed following standard psychiatric distributions (e.g. STAR*D, Sequenced Treatment Alternatives to Relieve Depression) for validation purposes.
 

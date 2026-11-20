@@ -24,7 +24,7 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.error('[NeuroClarity Error Boundary Caught]:', error, errorInfo);
+    console.error('[AntiDEP Error Boundary Caught]:', error, errorInfo);
     this.setState({ errorInfo });
   }
 

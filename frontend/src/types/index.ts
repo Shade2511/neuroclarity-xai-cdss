@@ -29,12 +29,33 @@ export interface Patient {
   has_asthma_copd?: number;
   has_epilepsy?: number;
   has_migraine?: number;
+  has_schizophrenia?: number;
+  has_mania?: number;
+  has_bipolar?: number;
+  has_ocd?: number;
+  has_other_psychiatric?: number;
+  has_other_psychoaffective?: number;
+  has_autoimmune?: number;
   comorbidity_count?: number;
   ad_name?: string;
   ad_class?: string;
   ad_dose_mg?: number;
   ad_frequency?: string;
   ad_duration_weeks?: number;
+  additional_prescriptions?: Array<{
+    id?: string;
+    ad_name: string;
+    ad_class: string;
+    ad_dose_mg: number;
+    ad_frequency?: string;
+    ad_duration_weeks?: number;
+  }>;
+  other_psychiatric_medications?: Array<{
+    id?: string;
+    drug_name: string;
+    dose_mg: number;
+    indication: string;
+  }>;
   madrs_baseline?: number;
   gad7_baseline?: number;
   mars_score?: number;

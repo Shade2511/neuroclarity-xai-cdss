@@ -1,5 +1,5 @@
 """
-NeuroClarity XAI-CDSS — Production-Ready FastAPI Backend
+AntiDEP XAI-CDSS — Production-Ready FastAPI Backend
 Relational Database Architecture with SQLAlchemy & Scikit-Learn / XGBoost Models.
 """
 import os
@@ -35,7 +35,7 @@ from db.seed import init_and_seed_db
 
 # --- App Setup ---
 app = FastAPI(
-    title="NeuroClarity XAI-CDSS API",
+    title="AntiDEP XAI-CDSS API",
     description="Explainable AI Clinical Decision Support System for Antidepressant Treatment Response",
     version="2.0.0"
 )
@@ -94,6 +94,13 @@ class PatientCreate(BaseModel):
     has_asthma_copd: Optional[int] = 0
     has_epilepsy: Optional[int] = 0
     has_migraine: Optional[int] = 0
+    has_schizophrenia: Optional[int] = 0
+    has_mania: Optional[int] = 0
+    has_bipolar: Optional[int] = 0
+    has_ocd: Optional[int] = 0
+    has_other_psychiatric: Optional[int] = 0
+    has_other_psychoaffective: Optional[int] = None
+    has_autoimmune: Optional[int] = 0
     ad_name: Optional[str] = "Escitalopram"
     ad_class: Optional[str] = "SSRI"
     ad_dose_mg: Optional[float] = 10.0
@@ -108,7 +115,10 @@ class PatientCreate(BaseModel):
     adr_occurred: Optional[int] = 0
     adr_severity: Optional[str] = "None"
     naranjo_score: Optional[int] = 0
+    naranjo_class: Optional[str] = "Doubtful"
     notes: Optional[str] = ""
+    additional_prescriptions: Optional[List[dict]] = []
+    other_psychiatric_medications: Optional[List[dict]] = []
 
 
 class PatientUpdate(BaseModel):
@@ -133,6 +143,13 @@ class PatientUpdate(BaseModel):
     has_asthma_copd: Optional[int] = None
     has_epilepsy: Optional[int] = None
     has_migraine: Optional[int] = None
+    has_schizophrenia: Optional[int] = None
+    has_mania: Optional[int] = None
+    has_bipolar: Optional[int] = None
+    has_ocd: Optional[int] = None
+    has_other_psychiatric: Optional[int] = None
+    has_other_psychoaffective: Optional[int] = None
+    has_autoimmune: Optional[int] = None
     ad_name: Optional[str] = None
     ad_class: Optional[str] = None
     ad_dose_mg: Optional[float] = None
@@ -147,7 +164,10 @@ class PatientUpdate(BaseModel):
     adr_occurred: Optional[int] = None
     adr_severity: Optional[str] = None
     naranjo_score: Optional[int] = None
+    naranjo_class: Optional[str] = None
     notes: Optional[str] = None
+    additional_prescriptions: Optional[List[dict]] = None
+    other_psychiatric_medications: Optional[List[dict]] = None
     edit_reason: Optional[str] = "Routine clinical record update"
 
 
@@ -244,6 +264,12 @@ def patient_to_features(patient_obj) -> pd.DataFrame:
         int(p.get('has_asthma_copd', 0) or 0),
         int(p.get('has_epilepsy', 0) or 0),
         int(p.get('has_migraine', 0) or 0),
+        int(p.get('has_schizophrenia', 0) or 0),
+        int(p.get('has_mania', 0) or 0),
+        int(p.get('has_bipolar', 0) or 0),
+        int(p.get('has_ocd', 0) or 0),
+        int(p.get('has_other_psychiatric', 0) or p.get('has_other_psychoaffective', 0) or 0),
+        int(p.get('has_autoimmune', 0) or 0),
     ]))
 
     features = {
@@ -439,12 +465,22 @@ def create_patient_record(patient: PatientCreate, db: Session = Depends(get_db))
         has_asthma_copd=patient.has_asthma_copd,
         has_epilepsy=patient.has_epilepsy,
         has_migraine=patient.has_migraine,
+        has_schizophrenia=patient.has_schizophrenia,
+        has_mania=patient.has_mania,
+        has_bipolar=patient.has_bipolar,
+        has_ocd=patient.has_ocd,
+        has_other_psychiatric=patient.has_other_psychiatric or patient.has_other_psychoaffective or 0,
+        has_autoimmune=patient.has_autoimmune,
         comorbidity_count=sum([
             patient.has_hypertension or 0, patient.has_diabetes or 0,
             patient.has_thyroid or 0, patient.has_cardiovascular or 0,
             patient.has_ckd or 0, patient.has_liver or 0,
             patient.has_asthma_copd or 0, patient.has_epilepsy or 0,
-            patient.has_migraine or 0
+            patient.has_migraine or 0, patient.has_schizophrenia or 0,
+            patient.has_mania or 0, patient.has_bipolar or 0,
+            patient.has_ocd or 0,
+            patient.has_other_psychiatric or patient.has_other_psychoaffective or 0,
+            patient.has_autoimmune or 0
         ]),
         ad_name=patient.ad_name,
         ad_class=patient.ad_class,
@@ -460,6 +496,11 @@ def create_patient_record(patient: PatientCreate, db: Session = Depends(get_db))
         adr_occurred=patient.adr_occurred,
         adr_severity=patient.adr_severity,
         naranjo_score=patient.naranjo_score,
+        naranjo_class=patient.naranjo_class or (
+            "Definite" if (patient.naranjo_score or 0) >= 9 else
+            "Probable" if (patient.naranjo_score or 0) >= 5 else
+            "Possible" if (patient.naranjo_score or 0) >= 1 else "Doubtful"
+        ),
         is_demo=False,
         notes=patient.notes
     )
@@ -476,6 +517,35 @@ def create_patient_record(patient: PatientCreate, db: Session = Depends(get_db))
         is_primary_antidepressant=True
     )
     db.add(med)
+
+    # Add additional prescriptions
+    if patient.additional_prescriptions:
+        for rx in patient.additional_prescriptions:
+            if rx.get('ad_name'):
+                db.add(MedicationRecord(
+                    patient_id=pid,
+                    drug_name=str(rx.get('ad_name')),
+                    drug_class=str(rx.get('ad_class', 'Other')),
+                    dose_mg=float(rx.get('ad_dose_mg', 10.0)),
+                    frequency=str(rx.get('ad_frequency', 'Once daily')),
+                    duration_weeks=int(rx.get('ad_duration_weeks', 4)),
+                    is_primary_antidepressant=False
+                ))
+
+    # Add medications for other psychiatric conditions
+    if patient.other_psychiatric_medications:
+        for rx in patient.other_psychiatric_medications:
+            if rx.get('drug_name'):
+                db.add(MedicationRecord(
+                    patient_id=pid,
+                    drug_name=str(rx.get('drug_name')),
+                    drug_class="Psychotropic",
+                    dose_mg=float(rx.get('dose_mg', 0.0)),
+                    frequency="Past / As directed",
+                    duration_weeks=0,
+                    indication=str(rx.get('indication', 'Psychiatric condition')),
+                    is_primary_antidepressant=False
+                ))
 
     # Initial baseline follow up
     w0 = FollowUpRecord(
@@ -863,7 +933,7 @@ def export_dataset_csv(db: Session = Depends(get_db)):
         ])
 
     output.seek(0)
-    filename = f"neuroclarity_clinical_cohort_N{len(patients)}_{datetime.utcnow().strftime('%Y%m%d')}.csv"
+    filename = f"antidep_clinical_cohort_N{len(patients)}_{datetime.utcnow().strftime('%Y%m%d')}.csv"
     return StreamingResponse(
         io.BytesIO(output.getvalue().encode('utf-8')),
         media_type="text/csv",

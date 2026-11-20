@@ -55,7 +55,7 @@ export const LandingPage: React.FC = () => {
           </div>
           <div className="leading-tight">
             <h1 className="font-bold text-xs sm:text-sm tracking-tight text-[#0F172A] flex items-center gap-1">
-              NeuroClarity <span className="hidden sm:inline text-[#0F766E] text-[10px] sm:text-xs font-semibold px-1.5 py-0.5 rounded bg-[#F0FDFA] border border-[#CCFBF1]">XAI-CDSS</span>
+              AntiDEP <span className="hidden sm:inline text-[#0F766E] text-[10px] sm:text-xs font-semibold px-1.5 py-0.5 rounded bg-[#F0FDFA] border border-[#CCFBF1]">XAI-CDSS</span>
             </h1>
             <p className="hidden sm:block text-[10px] text-[#64748B] font-medium uppercase tracking-wider">Clinical Decision Support Platform</p>
           </div>
@@ -414,7 +414,7 @@ export const LandingPage: React.FC = () => {
       <footer className="py-12 px-4 text-center max-w-2xl mx-auto space-y-3">
         <div className="flex items-center justify-center space-x-2 text-xs font-semibold text-[#64748B]">
           <Brain className="w-4 h-4 text-[#0F766E]" />
-          <span>NeuroClarity XAI-CDSS · Explainable Clinical Intelligence</span>
+          <span>AntiDEP XAI-CDSS · Explainable Clinical Intelligence</span>
         </div>
         <p className="text-xs text-[#94A3B8] leading-relaxed">
           RESEARCH DEMONSTRATION PROTOTYPE ($N=320$ SYNTHETIC DATASET) · Designed for physician decision support. Treats psychiatric clinical judgment as final authority.

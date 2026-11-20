@@ -1,5 +1,5 @@
 """
-NeuroClarity XAI-CDSS — Relational Database Models (SQLAlchemy)
+AntiDEP XAI-CDSS — Relational Database Models (SQLAlchemy)
 Normalized clinical schema with proper foreign keys, constraints, and timestamps.
 """
 from datetime import datetime
@@ -48,6 +48,12 @@ class Patient(Base):
     has_asthma_copd = Column(Integer, default=0)
     has_epilepsy = Column(Integer, default=0)
     has_migraine = Column(Integer, default=0)
+    has_schizophrenia = Column(Integer, default=0)
+    has_mania = Column(Integer, default=0)
+    has_bipolar = Column(Integer, default=0)
+    has_ocd = Column(Integer, default=0)
+    has_other_psychiatric = Column(Integer, default=0)
+    has_autoimmune = Column(Integer, default=0)
     comorbidity_count = Column(Integer, default=0)
 
     # Current Medication

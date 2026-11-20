@@ -43,7 +43,7 @@ export const OverviewPage: React.FC = () => {
               <StatusBadge status="DEMONSTRATION PROTOTYPE" size="sm" />
               <span className="text-xs text-[#64748B] font-semibold">Antigravity Multi-Agent Workflow</span>
             </div>
-            <h2 className="text-2xl font-bold text-[#0F172A]">NeuroClarity Clinical Intelligence Hub</h2>
+            <h2 className="text-2xl font-bold text-[#0F172A]">AntiDEP Clinical Intelligence Hub</h2>
             <p className="text-xs text-[#475569] max-w-2xl leading-relaxed">
               Real-time explainable prediction of antidepressant response (≥50% MADRS score reduction). Built using hybrid scikit-learn ML models and SHAP / LIME explainability engines.
             </p>

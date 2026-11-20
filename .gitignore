@@ -1,4 +1,6 @@
 # Dependencies
+
+NEWUPDATES.txt
 node_modules/
 __pycache__/
 *.pyc

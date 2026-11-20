@@ -1,6 +1,6 @@
-# Contributing to NeuroClarity XAI-CDSS
+# Contributing to AntiDEP XAI-CDSS
 
-Thank you for your interest in contributing to **NeuroClarity XAI-CDSS**! We welcome contributions from data scientists, machine learning engineers, clinical researchers, clinicians, and software developers.
+Thank you for your interest in contributing to **AntiDEP XAI-CDSS**! We welcome contributions from data scientists, machine learning engineers, clinical researchers, clinicians, and software developers.
 
 ---
 

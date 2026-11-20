@@ -45,7 +45,7 @@ const SidebarContent: React.FC<SidebarContentProps> = ({ onNavigate, collapsed =
         </div>
         {!collapsed && (
           <div className="leading-tight truncate">
-            <h1 className="font-bold text-sm tracking-tight text-[#0F172A]">NeuroClarity</h1>
+            <h1 className="font-bold text-sm tracking-tight text-[#0F172A]">AntiDEP</h1>
             <p className="text-[10px] text-[#0F766E] font-semibold tracking-wider uppercase">XAI-CDSS Enterprise</p>
           </div>
         )}

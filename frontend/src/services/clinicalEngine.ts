@@ -17,7 +17,8 @@ import {
   MedicationItem
 } from '../types';
 
-const PATIENTS_STORAGE_KEY = 'neuroclarity_user_patients';
+const PATIENTS_STORAGE_KEY = 'antidep_user_patients';
+const LEGACY_STORAGE_KEY = 'neuroclarity_user_patients';
 
 const getDemoCohortPatients = (): Patient[] => {
   return (rawPatients as any[]).map((p, idx) => ({
@@ -51,6 +52,12 @@ const getDemoCohortPatients = (): Patient[] => {
     has_asthma_copd: Number(p.has_asthma_copd || 0),
     has_epilepsy: Number(p.has_epilepsy || 0),
     has_migraine: Number(p.has_migraine || 0),
+    has_schizophrenia: Number(p.has_schizophrenia || 0),
+    has_mania: Number(p.has_mania || 0),
+    has_bipolar: Number(p.has_bipolar || 0),
+    has_ocd: Number(p.has_ocd || 0),
+    has_other_psychiatric: Number(p.has_other_psychiatric || p.has_other_psychoaffective || 0),
+    has_autoimmune: Number(p.has_autoimmune || 0),
     comorbidity_count: Number(p.comorbidity_count || 0),
     ad_name: String(p.ad_name || 'Escitalopram'),
     ad_class: String(p.ad_class || 'SSRI'),
@@ -83,7 +90,7 @@ const getDemoCohortPatients = (): Patient[] => {
 const loadStoredPatients = (): Patient[] => {
   if (typeof window === 'undefined') return [];
   try {
-    const raw = localStorage.getItem(PATIENTS_STORAGE_KEY);
+    const raw = localStorage.getItem(PATIENTS_STORAGE_KEY) || localStorage.getItem(LEGACY_STORAGE_KEY);
     if (raw) {
       const parsed = JSON.parse(raw);
       if (Array.isArray(parsed) && parsed.length > 0) {
@@ -222,7 +229,27 @@ export const EdgeClinicalEngine = {
         duration_weeks: pt.ad_duration_weeks || 4,
         is_primary_antidepressant: true,
         status: 'Active'
-      }
+      },
+      ...((pt.additional_prescriptions || []).map((rx: any, idx: number) => ({
+        id: idx + 2,
+        drug_name: rx.ad_name,
+        drug_class: rx.ad_class || 'Antidepressant',
+        dose_mg: Number(rx.ad_dose_mg || 10),
+        frequency: rx.ad_frequency || 'Once daily',
+        duration_weeks: Number(rx.ad_duration_weeks || 4),
+        is_primary_antidepressant: false,
+        status: 'Active'
+      }))),
+      ...((pt.other_psychiatric_medications || []).map((rx: any, idx: number) => ({
+        id: (pt.additional_prescriptions?.length || 0) + idx + 2,
+        drug_name: rx.drug_name,
+        drug_class: 'Psychotropic',
+        dose_mg: Number(rx.dose_mg || 0),
+        frequency: 'Past / Maintenance',
+        duration_weeks: 0,
+        is_primary_antidepressant: false,
+        status: `Indication: ${rx.indication || 'Psychiatric condition'}`
+      })))
     ];
 
     const madrsBase = pt.madrs_baseline ?? 32;
@@ -367,7 +394,29 @@ export const EdgeClinicalEngine = {
       has_asthma_copd: patient.has_asthma_copd || 0,
       has_epilepsy: patient.has_epilepsy || 0,
       has_migraine: patient.has_migraine || 0,
-      comorbidity_count: patient.comorbidity_count || 0,
+      has_schizophrenia: patient.has_schizophrenia || 0,
+      has_mania: patient.has_mania || 0,
+      has_bipolar: patient.has_bipolar || 0,
+      has_ocd: patient.has_ocd || 0,
+      has_other_psychiatric: patient.has_other_psychiatric || (patient as any).has_other_psychoaffective || 0,
+      has_autoimmune: patient.has_autoimmune || 0,
+      comorbidity_count: patient.comorbidity_count ?? (
+        (patient.has_hypertension || 0) +
+        (patient.has_diabetes || 0) +
+        (patient.has_thyroid || 0) +
+        (patient.has_cardiovascular || 0) +
+        (patient.has_ckd || 0) +
+        (patient.has_liver || 0) +
+        (patient.has_asthma_copd || 0) +
+        (patient.has_epilepsy || 0) +
+        (patient.has_migraine || 0) +
+        (patient.has_schizophrenia || 0) +
+        (patient.has_mania || 0) +
+        (patient.has_bipolar || 0) +
+        (patient.has_ocd || 0) +
+        (patient.has_other_psychiatric || (patient as any).has_other_psychoaffective || 0) +
+        (patient.has_autoimmune || 0)
+      ),
       ad_name: patient.ad_name || 'Escitalopram',
       ad_class: patient.ad_class || 'SSRI',
       ad_dose_mg: patient.ad_dose_mg || 10,
@@ -392,6 +441,8 @@ export const EdgeClinicalEngine = {
       response_binary: 1,
       response_class: 'Responder',
       is_demo: false,
+      additional_prescriptions: patient.additional_prescriptions || [],
+      other_psychiatric_medications: patient.other_psychiatric_medications || [],
       notes: patient.notes || ''
     };
 
@@ -842,7 +893,7 @@ export const EdgeClinicalEngine = {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `neuroclarity_cohort_N${patientsData.length}_${new Date().toISOString().split('T')[0]}.csv`;
+    link.download = `antidep_cohort_N${patientsData.length}_${new Date().toISOString().split('T')[0]}.csv`;
     link.click();
     URL.revokeObjectURL(url);
   },
